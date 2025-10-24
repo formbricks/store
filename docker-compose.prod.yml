@@ -1,0 +1,76 @@
+services:
+  # PostgreSQL Database with pgvector
+  postgres:
+    image: pgvector/pgvector:pg18
+    container_name: formbricks_store_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: formbricks
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-formbricks_secure_password}
+      POSTGRES_DB: store
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U formbricks -d store']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - formbricks_store
+
+  # Formbricks Store API
+  store:
+    image: ghcr.io/formbricks/store:latest
+    container_name: formbricks_store_api
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      # Required: Database connection
+      SERVICE_DATABASE_URL: postgresql://formbricks:${POSTGRES_PASSWORD:-formbricks_secure_password}@postgres:5432/store?sslmode=disable
+      
+      # Required: API authentication key
+      SERVICE_API_KEY: ${SERVICE_API_KEY}
+      
+      # Optional: Server configuration
+      SERVICE_PORT: ${SERVICE_PORT:-8080}
+      SERVICE_HOST: 0.0.0.0
+      SERVICE_ENVIRONMENT: ${SERVICE_ENVIRONMENT:-production}
+      
+      # Optional: Logging
+      SERVICE_LOG_LEVEL: ${SERVICE_LOG_LEVEL:-info}
+      
+      # Optional: AI Enrichment (requires OpenAI API key)
+      SERVICE_OPEN_AI_KEY: ${SERVICE_OPEN_AI_KEY:-}
+      SERVICE_OPENAI_ENRICHMENT_MODEL: ${SERVICE_OPENAI_ENRICHMENT_MODEL:-gpt-4o-mini}
+      SERVICE_ENRICHMENT_TIMEOUT: ${SERVICE_ENRICHMENT_TIMEOUT:-10}
+      SERVICE_ENRICHMENT_WORKERS: ${SERVICE_ENRICHMENT_WORKERS:-3}
+      SERVICE_ENRICHMENT_POLL_INTERVAL: ${SERVICE_ENRICHMENT_POLL_INTERVAL:-1}
+      
+      # Optional: AI Embeddings for semantic search
+      SERVICE_OPENAI_EMBEDDING_MODEL: ${SERVICE_OPENAI_EMBEDDING_MODEL:-text-embedding-3-small}
+      
+      # Optional: Webhook notifications
+      SERVICE_WEBHOOK_URLS: ${SERVICE_WEBHOOK_URLS:-}
+    ports:
+      - '8080:8080'
+    healthcheck:
+      test: ['CMD', 'wget', '--no-verbose', '--tries=1', '--spider', 'http://localhost:8080/health']
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - formbricks_store
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  formbricks_store:
+    driver: bridge
+

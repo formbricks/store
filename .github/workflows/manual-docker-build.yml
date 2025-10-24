@@ -1,0 +1,43 @@
+name: Manual Docker Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Custom tag for the image (e.g., test, dev, feature-name)'
+        required: true
+        type: string
+        default: 'manual-test'
+      platforms:
+        description: 'Target platforms'
+        required: false
+        type: choice
+        options:
+          - 'linux/amd64,linux/arm64'
+          - 'linux/amd64'
+          - 'linux/arm64'
+        default: 'linux/amd64'
+      push:
+        description: 'Push to registry (uncheck for local build test)'
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  docker:
+    name: Manual Docker Build
+    uses: ./.github/workflows/docker-build.yml
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
+    with:
+      image-name: formbricks/store
+      context: ./apps/store
+      dockerfile: ./apps/store/Dockerfile
+      platforms: ${{ inputs.platforms }}
+      push: ${{ inputs.push }}
+      tags-input: type=raw,value=${{ inputs.tag }}
+      enable-attestation: ${{ inputs.push }}
+

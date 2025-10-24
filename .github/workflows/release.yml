@@ -1,0 +1,29 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  # Build and publish Docker image to GitHub Container Registry
+  docker:
+    name: Build and Push Docker Image
+    uses: ./.github/workflows/docker-build.yml
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
+    with:
+      image-name: formbricks/store
+      context: ./apps/store
+      dockerfile: ./apps/store/Dockerfile
+      platforms: linux/amd64,linux/arm64
+      push: true
+      enable-attestation: true
+
+  # Future jobs can be added here:
+  # - Publish Go binaries for different platforms
+  # - Publish npm packages (if any)
+  # - Create release notes
+  # - Send notifications

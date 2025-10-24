@@ -1,0 +1,98 @@
+name: Feature Request
+description: Suggest a new feature or enhancement for Formbricks Store
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a new feature! We appreciate your ideas for improving Formbricks Store.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Description
+      description: What problem does this feature solve? What is the use case?
+      placeholder: |
+        I'm frustrated when...
+        It would be helpful if...
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: How would you like this feature to work?
+      placeholder: |
+        I would like to be able to...
+        The API could provide...
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Have you considered any alternative solutions or features?
+      placeholder: |
+        I also considered...
+        An alternative approach would be...
+
+  - type: textarea
+    id: examples
+    attributes:
+      label: Examples and Use Cases
+      description: Provide specific examples or use cases for this feature
+      placeholder: |
+        Example 1: When importing survey data...
+        Example 2: For analyzing sentiment across...
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Component
+      description: Which part of Formbricks Store does this relate to?
+      options:
+        - Store API
+        - AI Enrichment
+        - Data Import Scripts
+        - Documentation
+        - Superset Integration
+        - Webhooks
+        - Multiple components
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: contribute
+    attributes:
+      label: Willingness to Contribute
+      description: Would you be willing to help implement this feature?
+      options:
+        - "Yes, I can implement this myself"
+        - "Yes, with guidance from maintainers"
+        - "No, but I can test the implementation"
+        - "No, I cannot contribute code"
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Add any other context, mockups, or screenshots about the feature request here
+      placeholder: Additional information...
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      description: Please confirm the following
+      options:
+        - label: I have searched existing issues to avoid duplicates
+          required: true
+        - label: I have checked the documentation to ensure this feature doesn't already exist
+          required: true
+

@@ -1,0 +1,110 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test-go:
+    name: Test Go API
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      pull-requests: read
+
+    services:
+      postgres:
+        image: pgvector/pgvector:pg18
+        env:
+          POSTGRES_USER: formbricks
+          POSTGRES_PASSWORD: test_password
+          POSTGRES_DB: store_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.25.3'
+          cache-dependency-path: apps/store/go.sum
+
+      - name: Install dependencies
+        working-directory: apps/store
+        run: go mod download
+
+      - name: Enable pgvector extension
+        run: |
+          PGPASSWORD=test_password psql -h localhost -U formbricks -d store_test -c "CREATE EXTENSION IF NOT EXISTS vector;"
+
+      - name: Run tests
+        working-directory: apps/store
+        env:
+          SERVICE_DATABASE_URL: postgres://formbricks:test_password@localhost:5432/store_test?sslmode=disable
+          SERVICE_API_KEY: test-api-key
+          SERVICE_LOG_LEVEL: error
+        run: make test
+
+      - name: Run golangci-lint
+        uses: golangci/golangci-lint-action@v8
+        with:
+          version: v2.5.0
+          working-directory: apps/store
+          args: --timeout=5m
+
+      - name: Check code formatting
+        working-directory: apps/store
+        run: |
+          if [ "$(gofmt -s -l . | wc -l)" -gt 0 ]; then
+            echo "The following files are not formatted:"
+            gofmt -s -l .
+            exit 1
+          fi
+
+  build-docs:
+    name: Build Documentation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        working-directory: apps/docs
+        run: pnpm install --frozen-lockfile
+
+      - name: Build documentation
+        working-directory: apps/docs
+        run: pnpm build
+
+      - name: Check for build artifacts
+        working-directory: apps/docs
+        run: |
+          if [ ! -d "build" ]; then
+            echo "Build directory not found"
+            exit 1
+          fi
+          echo "Documentation built successfully"
+
