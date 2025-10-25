@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Data Model
 
-Store uses a simple, powerful data model optimized for analytics. Each record represents **one answer to one question**, making it incredibly easy to query, aggregate, and visualize your experience data.
+Hub uses a simple, powerful data model optimized for analytics. Each record represents **one answer to one question**, making it incredibly easy to query, aggregate, and visualize your experience data.
 
 ## How It Works
 
@@ -18,7 +18,7 @@ Every piece of feedback—whether it's an NPS score, a text comment, or a multip
 
 ### Example: Survey Response
 
-When a user completes a survey with an NPS score and a comment, Store creates two records:
+When a user completes a survey with an NPS score and a comment, Hub creates two records:
 
 ```json
 // Record 1: NPS score
@@ -56,7 +56,7 @@ qualitative feedback.
 | ------------------ | --------- | -------- | ------------------------------------------------------------ |
 | **`id`**           | UUIDv7    | Auto     | Time-ordered primary key for efficient indexing              |
 | **`collected_at`** | Timestamp | ✅       | When the feedback was originally collected (defaults to now) |
-| **`created_at`**   | Timestamp | Auto     | When the record was created in the Store                     |
+| **`created_at`**   | Timestamp | Auto     | When the record was created in the Hub                     |
 | **`updated_at`**   | Timestamp | Auto     | When the record was last updated                             |
 
 #### Source Tracking
@@ -104,7 +104,7 @@ qualitative feedback.
 ### Field Types
 
 The `field_type` field uses **validated enums** to categorize responses and determine which
-`value_*` field to use. Store enforces these 8 standardized types optimized for analytics:
+`value_*` field to use. Hub enforces these 8 standardized types optimized for analytics:
 
 | Type              | Description                        | Value Field     | AI Enrichment | Analytics Use                                    |
 | ----------------- | ---------------------------------- | --------------- | ------------- | ------------------------------------------------ |
@@ -297,7 +297,7 @@ GROUP BY value_text;
 
 ## Database Indexes
 
-Store automatically creates indexes for optimal query performance:
+Hub automatically creates indexes for optimal query performance:
 
 - **`source_type`** - Filter by feedback source (survey, review, support)
 - **`source_id`** - Query specific surveys/forms
@@ -315,7 +315,7 @@ All indexes are created automatically via database migrations. The combination o
 
 ## UUIDv7 Primary Keys
 
-Store uses **UUIDv7** for primary keys, combining the benefits of UUIDs with time-ordered sorting:
+Hub uses **UUIDv7** for primary keys, combining the benefits of UUIDs with time-ordered sorting:
 
 **What you get:**
 - ✅ **Chronological sorting** - IDs sort by creation time automatically
@@ -333,7 +333,7 @@ The timestamp prefix means newer records naturally have larger IDs, improving bo
 
 ## JSONB Metadata
 
-Store uses PostgreSQL's `JSONB` type for flexible contextual data storage in the `metadata` field.
+Hub uses PostgreSQL's `JSONB` type for flexible contextual data storage in the `metadata` field.
 This allows you to attach any custom attributes to your experience data without schema changes.
 
 ### Common Metadata Patterns

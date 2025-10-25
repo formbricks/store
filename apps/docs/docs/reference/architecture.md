@@ -4,10 +4,10 @@ sidebar_position: 2
 
 # Architecture Reference
 
-Technical reference for contributors and those interested in Store's internal design.
+Technical reference for contributors and those interested in Hub's internal design.
 
 :::info Audience
-This page is for **contributors** and **advanced users** who want to understand Store's internals. If you're just using Store, see the [Quick Start Guide](../quickstart) instead.
+This page is for **contributors** and **advanced users** who want to understand Hub's internals. If you're just using Hub, see the [Quick Start Guide](../quickstart) instead.
 :::
 
 ## Technology Stack
@@ -23,9 +23,9 @@ This page is for **contributors** and **advanced users** who want to understand 
 ## Project Structure
 
 ```
-apps/store/
+apps/hub/
 ├── cmd/
-│   └── store/
+│   └── hub/
 │       └── main.go              # Entry point, CLI setup
 ├── internal/
 │   ├── api/
@@ -56,7 +56,7 @@ apps/store/
 
 ## Architecture Layers
 
-### 1. Entry Point (`cmd/store/main.go`)
+### 1. Entry Point (`cmd/hub/main.go`)
 
 - Parses CLI arguments and environment variables using Huma CLI
 - Initializes logger based on `SERVICE_LOG_LEVEL`
@@ -224,7 +224,7 @@ CREATE INDEX idx_field_collected ON experience_data(field_type, collected_at);
 
 ### Huma CLI Integration
 
-Store uses Huma's built-in CLI with the `SERVICE_` prefix convention:
+Hub uses Huma's built-in CLI with the `SERVICE_` prefix convention:
 
 ```go
 type Options struct {
@@ -279,7 +279,7 @@ func TestCreateExperience(t *testing.T) {
 2. **Hot reload** via Air (automatic restart)
 3. **Test locally** against PostgreSQL in Docker
 4. **Run tests**: `make test`
-5. **Check types**: `go build ./cmd/store`
+5. **Check types**: `go build ./cmd/hub`
 
 ### Adding a New Field to ExperienceData
 
@@ -374,7 +374,7 @@ See [CONTRIBUTING.md](https://github.com/formbricks/formbricks-rewrite/blob/main
 ## Next Steps for Contributors
 
 - **Set up locally**: [Quick Start Guide](../quickstart)
-- **Explore codebase**: `apps/store/internal/`
+- **Explore codebase**: `apps/hub/internal/`
 - **Run tests**: `make test`
-- **GitHub Discussions**: [Ask questions](https://github.com/formbricks/store/discussions)
+- **GitHub Discussions**: [Ask questions](https://github.com/formbricks/hub/discussions)
 

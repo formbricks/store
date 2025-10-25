@@ -4,19 +4,19 @@ on:
   workflow_call:
     inputs:
       image-name:
-        description: 'Docker image name (e.g., formbricks/store)'
+        description: 'Docker image name (e.g., formbricks/hub)'
         required: true
         type: string
       context:
         description: 'Build context path'
         required: false
         type: string
-        default: './apps/store'
+        default: './apps/hub'
       dockerfile:
         description: 'Path to Dockerfile'
         required: false
         type: string
-        default: './apps/store/Dockerfile'
+        default: './apps/hub/Dockerfile'
       platforms:
         description: 'Target platforms'
         required: false
@@ -88,7 +88,7 @@ jobs:
             type=sha,prefix={{branch}}-
             ${{ inputs.tags-input }}
           labels: |
-            org.opencontainers.image.title=Formbricks Store
+            org.opencontainers.image.title=Formbricks Hub
             org.opencontainers.image.description=Unified experience data platform with RAG capabilities
             org.opencontainers.image.vendor=Formbricks GmbH
 

@@ -6,7 +6,7 @@ import webpack from "webpack";
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
-  title: "Formbricks Store Documentation",
+  title: "Formbricks Hub Documentation",
   tagline: "Unified experience data repository for customer feedback",
   favicon: "img/favicon.ico",
 
@@ -24,7 +24,7 @@ const config: Config = {
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: "formbricks", // Usually your GitHub org/user name.
-  projectName: "store", // Usually your repo name.
+  projectName: "hub", // Usually your repo name.
 
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
@@ -44,7 +44,7 @@ const config: Config = {
         docs: {
           sidebarPath: "./sidebars.ts",
           routeBasePath: "/",
-          editUrl: "https://github.com/formbricks/store/tree/main/apps/docs/",
+          editUrl: "https://github.com/formbricks/hub/tree/main/apps/docs/",
         },
         blog: false,
         theme: {
@@ -85,7 +85,7 @@ const config: Config = {
   themeConfig: {
     image: "img/logo.svg",
     navbar: {
-      title: "Formbricks Store",
+      title: "Formbricks Hub",
       logo: {
         alt: "Formbricks Logo",
         src: "img/logo.svg",
@@ -103,7 +103,7 @@ const config: Config = {
           position: "left",
         },
         {
-          href: "https://github.com/formbricks/store",
+          href: "https://github.com/formbricks/hub",
           label: "GitHub",
           position: "right",
         },
@@ -130,7 +130,7 @@ const config: Config = {
           items: [
             {
               label: "GitHub Discussions",
-              href: "https://github.com/formbricks/store/discussions",
+              href: "https://github.com/formbricks/hub/discussions",
             },
             {
               label: "X",
@@ -143,7 +143,7 @@ const config: Config = {
           items: [
             {
               label: "GitHub",
-              href: "https://github.com/formbricks/store",
+              href: "https://github.com/formbricks/hub",
             },
           ],
         },

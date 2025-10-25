@@ -16,7 +16,7 @@ const FeatureList: FeatureItem[] = [
     description: (
       <>
         Collect experience data from surveys, reviews, support tickets, and more
-        into one centralized, queryable data store. No vendor lock-in.
+        into one centralized, queryable data hub. No vendor lock-in.
       </>
     ),
   },

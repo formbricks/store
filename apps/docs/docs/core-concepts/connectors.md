@@ -10,12 +10,12 @@ The connector ecosystem is under active development. This page outlines our visi
 
 ## Vision
 
-Formbricks Store will support an **open ecosystem of connectors** for importing and exporting experience data.
+Formbricks Hub will support an **open ecosystem of connectors** for importing and exporting experience data.
 
 ### Why Connectors?
 
 Experience data lives in many places:
-- **App stores** (Apple App Store, Google Play)
+- **App hubs** (Apple App Store, Google Play)
 - **Review platforms** (Trustpilot, G2, Capterra)
 - **Survey tools** (Typeform, Google Forms)
 - **Support platforms** (Zendesk, Intercom)
@@ -31,7 +31,7 @@ Connectors will enable you to:
 
 ### Source Connectors (Import)
 
-Source connectors will pull experience data **into** Store from external platforms:
+Source connectors will pull experience data **into** Hub from external platforms:
 
 - **App Store & Google Play** - Mobile app reviews
 - **Review Platforms** - Trustpilot, G2, Capterra
@@ -42,16 +42,16 @@ Source connectors will pull experience data **into** Store from external platfor
 
 ### Destination Connectors (Export)
 
-Destination connectors will push experience data **from** Store to external systems:
+Destination connectors will push experience data **from** Hub to external systems:
 
 - **Data Warehouses** - Snowflake, Redshift, BigQuery
 - **Business Intelligence** - Tableau, Power BI
-- **Webhooks** - Any HTTP endpoint (already available via Store's built-in webhook system)
+- **Webhooks** - Any HTTP endpoint (already available via Hub's built-in webhook system)
 
 ## Stay Updated
 
 We'll share updates on the connector ecosystem as we develop it:
 
-- **GitHub**: [formbricks/store](https://github.com/formbricks/store) - Watch for releases
-- **Discussions**: [Share connector ideas](https://github.com/formbricks/store/discussions) - Discuss what you'd like to see
+- **GitHub**: [formbricks/hub](https://github.com/formbricks/hub) - Watch for releases
+- **Discussions**: [Share connector ideas](https://github.com/formbricks/hub/discussions) - Discuss what you'd like to see
 

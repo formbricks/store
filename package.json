@@ -1,5 +1,5 @@
 {
-  "name": "formbricks-store",
+  "name": "formbricks-hub",
   "private": true,
   "scripts": {
     "dev": "turbo dev",

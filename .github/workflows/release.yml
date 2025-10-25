@@ -15,9 +15,9 @@ jobs:
       attestations: write
       id-token: write
     with:
-      image-name: formbricks/store
-      context: ./apps/store
-      dockerfile: ./apps/store/Dockerfile
+      image-name: formbricks/hub
+      context: ./apps/hub
+      dockerfile: ./apps/hub/Dockerfile
       platforms: linux/amd64,linux/arm64
       push: true
       enable-attestation: true

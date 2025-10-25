@@ -1,12 +1,12 @@
 name: Feature Request
-description: Suggest a new feature or enhancement for Formbricks Store
+description: Suggest a new feature or enhancement for Formbricks Hub
 title: "[Feature]: "
 labels: ["enhancement"]
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for suggesting a new feature! We appreciate your ideas for improving Formbricks Store.
+        Thanks for suggesting a new feature! We appreciate your ideas for improving Formbricks Hub.
 
   - type: textarea
     id: problem
@@ -52,9 +52,9 @@ body:
     id: component
     attributes:
       label: Component
-      description: Which part of Formbricks Store does this relate to?
+      description: Which part of Formbricks Hub does this relate to?
       options:
-        - Store API
+        - Hub API
         - AI Enrichment
         - Data Import Scripts
         - Documentation

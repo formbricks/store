@@ -1,4 +1,4 @@
-# Formbricks Store
+# Formbricks Hub
 
 <div align="center">
 
@@ -7,8 +7,8 @@
 Aggregate, enrich, and analyze customer feedback from surveys, reviews, and support tickets
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![CI](https://github.com/formbricks/store/workflows/CI/badge.svg)](https://github.com/formbricks/store/actions)
-[![GitHub stars](https://img.shields.io/github/stars/formbricks/store?style=social)](https://github.com/formbricks/store/stargazers)
+[![CI](https://github.com/formbricks/hub/workflows/CI/badge.svg)](https://github.com/formbricks/hub/actions)
+[![GitHub stars](https://img.shields.io/github/stars/formbricks/hub?style=social)](https://github.com/formbricks/hub/stargazers)
 
 [Documentation](https://main.d3n9jg0z7xep8b.amplifyapp.com) · [Quick Start](#-quick-start) · [Community](#-community)
 
@@ -20,7 +20,7 @@ Aggregate, enrich, and analyze customer feedback from surveys, reviews, and supp
 
 ## 🎯 Overview
 
-**Formbricks Store** is an open-source unified experience data repository that solves the challenge of scattered customer feedback across multiple platforms. It provides a centralized system to collect, enrich with AI, and analyze feedback from surveys, product reviews, support tickets, and social media.
+**Formbricks Hub** is an open-source unified experience data repository that solves the challenge of scattered customer feedback across multiple platforms. It provides a centralized system to collect, enrich with AI, and analyze feedback from surveys, product reviews, support tickets, and social media.
 
 ### The Problem
 
@@ -34,7 +34,7 @@ Each platform has different data formats, making it impossible to get a unified 
 
 ### The Solution
 
-Store provides:
+Hub provides:
 
 ✅ **Unified Data Model** - All feedback sources mapped to a single, analytics-optimized schema  
 ✅ **AI-Powered Enrichment** - Automatic sentiment analysis, emotion detection, and topic extraction  
@@ -48,7 +48,7 @@ Store provides:
 
 ### 📊 Analytics-First Data Model
 
-Store uses a **narrow format** (one row per question-answer pair) optimized for SQL aggregations and BI tools. No complex JSON unnesting, no wide tables—just simple, queryable data:
+Hub uses a **narrow format** (one row per question-answer pair) optimized for SQL aggregations and BI tools. No complex JSON unnesting, no wide tables—just simple, queryable data:
 
 ```sql
 -- Direct aggregation without JSON unnesting
@@ -134,8 +134,8 @@ Get up and running in under 5 minutes with Docker.
 **1. Download the production Docker Compose file:**
 
 ```bash
-mkdir formbricks-store && cd formbricks-store
-curl -o docker-compose.yml https://raw.githubusercontent.com/formbricks/store/main/docker-compose.prod.yml
+mkdir formbricks-hub && cd formbricks-hub
+curl -o docker-compose.yml https://raw.githubusercontent.com/formbricks/hub/main/docker-compose.prod.yml
 ```
 
 **2. Configure your environment:**
@@ -155,7 +155,7 @@ SERVICE_PORT=8080
 SERVICE_LOG_LEVEL=info
 ```
 
-💡 **Note**: Without `SERVICE_OPENAI_API_KEY`, Store works perfectly but won't enrich text feedback with sentiment/topics or support semantic search.
+💡 **Note**: Without `SERVICE_OPENAI_API_KEY`, Hub works perfectly but won't enrich text feedback with sentiment/topics or support semantic search.
 
 **3. Start the services:**
 
@@ -164,7 +164,7 @@ docker-compose up -d
 ```
 
 This starts:
-- **Formbricks Store API** (port 8080)
+- **Formbricks Hub API** (port 8080)
 - **PostgreSQL** (port 5432)
 
 **4. Verify it's running:**
@@ -193,7 +193,7 @@ curl -X POST http://localhost:8080/v1/experiences \
   }'
 ```
 
-Within seconds, Store automatically enriches the feedback with:
+Within seconds, Hub automatically enriches the feedback with:
 - **Sentiment**: `negative` (score: -0.8)
 - **Emotion**: `frustration`
 - **Topics**: `["checkout", "user_experience", "performance"]`
@@ -223,8 +223,8 @@ For local development with hot-reload:
 **1. Clone the repository:**
 
 ```bash
-git clone https://github.com/formbricks/store.git
-cd store
+git clone https://github.com/formbricks/hub.git
+cd hub
 ```
 
 **2. Start development services:**
@@ -233,10 +233,10 @@ cd store
 docker compose up -d  # PostgreSQL
 ```
 
-**3. Run the Store API:**
+**3. Run the Hub API:**
 
 ```bash
-cd apps/store
+cd apps/hub
 cp env.example .env
 # Edit .env with your configuration
 make dev
@@ -276,7 +276,7 @@ The API will be available at `http://localhost:8888`
 
 **Key Components:**
 
-- **Store API** (Go): High-performance REST API with OpenAPI 3.1 documentation
+- **Hub API** (Go): High-performance REST API with OpenAPI 3.1 documentation
 - **PostgreSQL 18**: Primary database with pgvector extension for semantic search
 - **Job Queue**: PostgreSQL-backed queue for reliable async processing
 - **AI Workers**: Background workers for sentiment analysis, topic extraction, and embeddings
@@ -289,9 +289,9 @@ The API will be available at `http://localhost:8888`
 ## 📁 Repository Structure
 
 ```
-formbricks-store/
+formbricks-hub/
 ├── apps/
-│   ├── store/          # Go API service (REST + workers)
+│   ├── hub/          # Go API service (REST + workers)
 │   └── docs/           # Docusaurus documentation site
 ├── scripts/
 │   └── data-imports/   # Python scripts for data sources
@@ -367,13 +367,13 @@ We'd love your feedback and contributions!
 
 ## 🔐 Security
 
-Formbricks Store is designed with security best practices:
+Formbricks Hub is designed with security best practices:
 
 - **API Key Authentication**: Timing-attack resistant constant-time comparison
 - **Rate Limiting**: Per-IP and global rate limits to prevent abuse
 - **Request Size Limits**: 10MB max body size to prevent memory exhaustion
 - **Sanitized Error Messages**: Generic errors returned to clients, detailed logs internally
-- **No PII Storage**: Store doesn't require personally identifiable information
+- **No PII Storage**: Hub doesn't require personally identifiable information
 - **Dependency Scanning**: Automated security updates via Dependabot
 
 **Report security vulnerabilities to:** security@formbricks.com
@@ -384,7 +384,7 @@ See [SECURITY.md](SECURITY.md) for full security details.
 
 ## 📄 License
 
-Formbricks Store is open-source software licensed under the **Apache License 2.0**.
+Formbricks Hub is open-source software licensed under the **Apache License 2.0**.
 
 See [LICENSE](LICENSE) for the full license text.
 
@@ -406,6 +406,6 @@ Powered by:
 
 <div align="center">
 
-**[⭐ Star us on GitHub](https://github.com/formbricks/store)** if you find this project useful!
+**[⭐ Star us on GitHub](https://github.com/formbricks/hub)** if you find this project useful!
 
 </div>

@@ -1,6 +1,6 @@
 # GitHub Workflows
 
-Documentation for all CI/CD workflows in the Formbricks Store repository.
+Documentation for all CI/CD workflows in the Formbricks Hub repository.
 
 ## Overview
 
@@ -50,7 +50,7 @@ Documentation for all CI/CD workflows in the Formbricks Store repository.
 - Generates artifact attestations for supply chain security
 - Tags images with semantic versions and `latest`
 
-**Image:** `ghcr.io/formbricks/store`
+**Image:** `ghcr.io/formbricks/hub`
 
 ---
 
@@ -64,9 +64,9 @@ Documentation for all CI/CD workflows in the Formbricks Store repository.
 
 | Input | Required | Default | Description |
 |-------|----------|---------|-------------|
-| `image-name` | Yes | - | Docker image name (e.g., `formbricks/store`) |
-| `context` | No | `./apps/store` | Build context path |
-| `dockerfile` | No | `./apps/store/Dockerfile` | Dockerfile path |
+| `image-name` | Yes | - | Docker image name (e.g., `formbricks/hub`) |
+| `context` | No | `./apps/hub` | Build context path |
+| `dockerfile` | No | `./apps/hub/Dockerfile` | Dockerfile path |
 | `platforms` | No | `linux/amd64,linux/arm64` | Target platforms |
 | `push` | No | `true` | Push image to registry |
 | `tags-input` | No | - | Additional custom tags |
@@ -107,7 +107,7 @@ Documentation for all CI/CD workflows in the Formbricks Store repository.
 ## Docker Images
 
 **Registry:** GitHub Container Registry (`ghcr.io`)  
-**Image Name:** `ghcr.io/formbricks/store`
+**Image Name:** `ghcr.io/formbricks/hub`
 
 ### Tags
 
@@ -125,13 +125,13 @@ Documentation for all CI/CD workflows in the Formbricks Store repository.
 
 ```bash
 # Latest release
-docker pull ghcr.io/formbricks/store:latest
+docker pull ghcr.io/formbricks/hub:latest
 
 # Specific version
-docker pull ghcr.io/formbricks/store:v1.0.0
+docker pull ghcr.io/formbricks/hub:v1.0.0
 
 # Custom tag from manual build
-docker pull ghcr.io/formbricks/store:test
+docker pull ghcr.io/formbricks/hub:test
 ```
 
 ---
@@ -190,12 +190,12 @@ This triggers the `release.yml` workflow which builds and publishes the Docker i
 - Ensure test database connection string is correct
 
 **Linter errors:**
-- Run locally: `cd apps/store && make lint`
+- Run locally: `cd apps/hub && make lint`
 - Check that you're using Go 1.25.3: `go version`
 - Verify golangci-lint configuration in `.golangci.yml`
 
 **Format check failures:**
-- Run locally: `cd apps/store && gofmt -s -w .`
+- Run locally: `cd apps/hub && gofmt -s -w .`
 - Commit the formatted code
 
 ### Docker Build Failures
@@ -209,8 +209,8 @@ This triggers the `release.yml` workflow which builds and publishes the Docker i
 - Check buildx and QEMU setup in workflow logs
 
 **Build context errors:**
-- Verify Dockerfile exists at `apps/store/Dockerfile`
-- Check that context path `apps/store` is correct
+- Verify Dockerfile exists at `apps/hub/Dockerfile`
+- Check that context path `apps/hub` is correct
 
 ---
 
@@ -249,6 +249,6 @@ Edit `ci.yml` to add new test jobs, update Go version, or modify linter configur
 
 ## References
 
-- [Repository](https://github.com/formbricks/store)
-- [Docker Images](https://github.com/orgs/formbricks/packages/container/package/store)
-- [Releases](https://github.com/formbricks/store/releases)
+- [Repository](https://github.com/formbricks/hub)
+- [Docker Images](https://github.com/orgs/formbricks/packages/container/package/hub)
+- [Releases](https://github.com/formbricks/hub/releases)

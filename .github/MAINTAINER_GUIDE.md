@@ -1,6 +1,6 @@
 # Maintainer Documentation
 
-This document provides guidance for Formbricks Store maintainers on repository management, release processes, and best practices.
+This document provides guidance for Formbricks Hub maintainers on repository management, release processes, and best practices.
 
 ## Repository Settings
 
@@ -38,7 +38,7 @@ Use these labels to categorize issues and PRs:
 - `security` - Security-related issues
 
 **Component:**
-- `api` - Store API related
+- `api` - Hub API related
 - `enrichment` - AI enrichment system
 - `docs` - Documentation site
 - `superset` - Apache Superset integration
@@ -89,13 +89,13 @@ Enable GitHub Discussions with these categories:
 
 - 💡 **Ideas** - Share ideas for new features
 - 🙏 **Q&A** - Ask the community for help
-- 🙌 **Show and Tell** - Share what you've built with Store
+- 🙌 **Show and Tell** - Share what you've built with Hub
 - 📣 **Announcements** - Updates from maintainers
 - 🐛 **Bug Reports** - Community bug reports (redirect to Issues)
 
 ## Release Process
 
-Formbricks Store follows semantic versioning (semver) and uses GitHub Releases.
+Formbricks Hub follows semantic versioning (semver) and uses GitHub Releases.
 
 ### Version Numbers
 
@@ -112,7 +112,7 @@ Formbricks Store follows semantic versioning (semver) and uses GitHub Releases.
    git pull origin main
    
    # Ensure all tests pass
-   cd apps/store && make test
+   cd apps/hub && make test
    cd ../docs && pnpm build
    ```
 
@@ -126,7 +126,7 @@ Formbricks Store follows semantic versioning (semver) and uses GitHub Releases.
    ```
 
 3. **Create GitHub Release:**
-   - Go to: https://github.com/formbricks/store/releases/new
+   - Go to: https://github.com/formbricks/hub/releases/new
    - Select the tag you just created
    - Release title: `v0.2.0` (same as tag)
    - Generate release notes automatically (or write custom notes)
@@ -140,15 +140,15 @@ Formbricks Store follows semantic versioning (semver) and uses GitHub Releases.
 4. **Automated actions:**
    - GitHub Actions will automatically:
      - Build Docker images
-     - Push to `ghcr.io/formbricks/store:v0.2.0`
-     - Tag as `ghcr.io/formbricks/store:latest` (for latest release)
+     - Push to `ghcr.io/formbricks/hub:v0.2.0`
+     - Tag as `ghcr.io/formbricks/hub:latest` (for latest release)
      - Generate build provenance attestation
 
 5. **Post-release verification:**
    ```bash
    # Pull and test the Docker image
-   docker pull ghcr.io/formbricks/store:v0.2.0
-   docker run --rm ghcr.io/formbricks/store:v0.2.0 --version
+   docker pull ghcr.io/formbricks/hub:v0.2.0
+   docker run --rm ghcr.io/formbricks/hub:v0.2.0 --version
    ```
 
 6. **Announce the release:**
@@ -231,7 +231,7 @@ Dependabot is configured to:
 
 **Go Dependencies:**
 ```bash
-cd apps/store
+cd apps/hub
 go get -u ./...
 go mod tidy
 make test

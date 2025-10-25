@@ -4,11 +4,11 @@ sidebar_position: 2
 
 # Authentication
 
-Secure your Store API with optional API key authentication. Enable it in production with a single environment variable.
+Secure your Hub API with optional API key authentication. Enable it in production with a single environment variable.
 
 ## How It Works
 
-Store runs **without authentication by default** for easy local development. When you set `SERVICE_API_KEY`, all API endpoints require the `X-API-Key` header - except health checks and documentation, which remain public.
+Hub runs **without authentication by default** for easy local development. When you set `SERVICE_API_KEY`, all API endpoints require the `X-API-Key` header - except health checks and documentation, which remain public.
 
 ## Enabling API Key Authentication
 
@@ -116,7 +116,7 @@ Response:
 
 ## Production Deployment
 
-Store's built-in API key authentication is ideal for:
+Hub's built-in API key authentication is ideal for:
 - ✅ Internal services and tools
 - ✅ Server-to-server communication
 - ✅ Quick production deployments
@@ -130,7 +130,7 @@ docker run -d \
   -p 8080:8080 \
   -e SERVICE_DATABASE_URL=postgres://... \
   -e SERVICE_API_KEY=your-secret-key-here \
-  ghcr.io/formbricks/store:latest
+  ghcr.io/formbricks/hub:latest
 ```
 
 ### Environment Variables
@@ -201,7 +201,7 @@ Look for 401 responses in logs:
 
 ### 5. Rate Limiting
 
-Store includes built-in rate limiting to protect against abuse:
+Hub includes built-in rate limiting to protect against abuse:
 
 - **Per-IP limits**: Default 100 requests/second per IP address
 - **Global limits**: Default 1000 requests/second across all IPs
@@ -266,13 +266,13 @@ Logs will show:
 
 Health checks (`/health`) should **never** require auth.
 
-If you see this, it's a bug. Please [report it](https://github.com/formbricks/store/issues).
+If you see this, it's a bug. Please [report it](https://github.com/formbricks/hub/issues).
 
 ### Docs Page Returns 401
 
 The `/docs` endpoint should always be public.
 
-If you see this, it's a bug. Please [report it](https://github.com/formbricks/store/issues).
+If you see this, it's a bug. Please [report it](https://github.com/formbricks/hub/issues).
 
 ## Examples
 
