@@ -1,4 +1,4 @@
 *.json
-!store.json
+!hub.json
 !.gitkeep
 

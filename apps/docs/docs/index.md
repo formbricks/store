@@ -3,17 +3,17 @@ sidebar_position: 1
 slug: /
 ---
 
-# Formbricks Store
+# Formbricks Hub
 
 The foundational data service for the Formbricks experience management platform.
 
-## What is Store?
+## What is Hub?
 
-Store is an open-source, self-hostable microservice for collecting and serving experience data – survey responses, NPS scores, product reviews, support feedback, and more. Built in Go for performance and simplicity.
+Hub is an open-source, self-hostable microservice for collecting and serving experience data – survey responses, NPS scores, product reviews, support feedback, and more. Built in Go for performance and simplicity.
 
-**Part of the Formbricks Ecosystem**: Store serves as the data foundation for survey delivery, analytics, AI agents, and custom workflows.
+**Part of the Formbricks Ecosystem**: Hub serves as the data foundation for survey delivery, analytics, AI agents, and custom workflows.
 
-## Why Store?
+## Why Hub?
 
 - 🚀 **High Performance**: Go-powered microservice handles high write volume
 - 🤖 **AI-Powered**: Automatic sentiment analysis, topic extraction, and semantic search
@@ -25,16 +25,16 @@ Store is an open-source, self-hostable microservice for collecting and serving e
 
 ### Centralize Feedback Data
 
-Collect experience data from multiple sources into one unified data store:
+Collect experience data from multiple sources into one unified data hub:
 - Survey responses from your app or website
-- App Store and Google Play reviews
+- App Hub and Google Play reviews
 - Trustpilot and other review platforms
 - Support ticket feedback (Intercom, Zendesk)
 - Social media sentiment
 
 ### Power Analytics Dashboards
 
-Store's schema is optimized for direct SQL queries and BI tool integration:
+Hub's schema is optimized for direct SQL queries and BI tool integration:
 - Connect Apache Superset for real-time dashboards
 - Build Power BI or Tableau reports without complex ETL
 - Export to Snowflake or Redshift for data warehousing
@@ -42,7 +42,7 @@ Store's schema is optimized for direct SQL queries and BI tool integration:
 
 ### AI-Powered Insights
 
-Store automatically enriches text feedback with actionable insights:
+Hub automatically enriches text feedback with actionable insights:
 - **Sentiment analysis**: Positive, negative, or neutral classification
 - **Emotion detection**: Joy, anger, sadness, and more
 - **Topic extraction**: Automatically identify themes in feedback
@@ -88,7 +88,7 @@ Apache 2.0 licensed. Self-host, modify, and own your data completely.
         <h3>🚀 Get Started</h3>
       </div>
       <div className="card__body">
-        <p>Set up Store locally in 5 minutes</p>
+        <p>Set up Hub locally in 5 minutes</p>
       </div>
       <div className="card__footer">
         <a href="./quickstart" className="button button--primary button--block">
@@ -103,7 +103,7 @@ Apache 2.0 licensed. Self-host, modify, and own your data completely.
         <h3>📚 Learn the Basics</h3>
       </div>
       <div className="card__body">
-        <p>Understand Store's data model and concepts</p>
+        <p>Understand Hub's data model and concepts</p>
       </div>
       <div className="card__footer">
         <a href="./core-concepts/data-model" className="button button--secondary button--block">
@@ -149,7 +149,7 @@ Apache 2.0 licensed. Self-host, modify, and own your data completely.
 
 ## Community & Support
 
-- **GitHub**: [formbricks/store](https://github.com/formbricks/store)
-- **Discussions**: [Ask questions and share ideas](https://github.com/formbricks/store/discussions)
-- **Issues**: [Report bugs or request features](https://github.com/formbricks/store/issues)
+- **GitHub**: [formbricks/hub](https://github.com/formbricks/hub)
+- **Discussions**: [Ask questions and share ideas](https://github.com/formbricks/hub/discussions)
+- **Issues**: [Report bugs or request features](https://github.com/formbricks/hub/issues)
 - **Documentation**: You're reading it! 📖

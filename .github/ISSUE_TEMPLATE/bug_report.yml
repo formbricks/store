@@ -1,5 +1,5 @@
 name: Bug Report
-description: Report a bug or unexpected behavior in Formbricks Store
+description: Report a bug or unexpected behavior in Formbricks Hub
 title: "[Bug]: "
 labels: ["bug"]
 body:
@@ -11,8 +11,8 @@ body:
   - type: input
     id: version
     attributes:
-      label: Formbricks Store Version
-      description: What version of Formbricks Store are you running?
+      label: Formbricks Hub Version
+      description: What version of Formbricks Hub are you running?
       placeholder: "e.g., v0.1.0, latest, commit SHA"
     validations:
       required: true
@@ -21,7 +21,7 @@ body:
     id: deployment
     attributes:
       label: Deployment Method
-      description: How are you running Formbricks Store?
+      description: How are you running Formbricks Hub?
       options:
         - Docker
         - Docker Compose
@@ -59,7 +59,7 @@ body:
       label: Steps to Reproduce
       description: Detailed steps to reproduce the behavior.
       placeholder: |
-        1. Start Store API with config...
+        1. Start Hub API with config...
         2. Make API request to...
         3. Observe error...
     validations:
@@ -118,6 +118,6 @@ body:
           required: true
         - label: I have removed any sensitive information from logs and configuration
           required: true
-        - label: I am using the latest version of Formbricks Store (or have noted my version above)
+        - label: I am using the latest version of Formbricks Hub (or have noted my version above)
           required: false
 

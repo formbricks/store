@@ -4,7 +4,7 @@ sidebar_position: 3
 
 # Webhooks
 
-Get notified instantly when new feedback arrives, gets updated, or is deleted. Store sends HTTP POST requests to your endpoints, enabling real-time integrations and custom workflows.
+Get notified instantly when new feedback arrives, gets updated, or is deleted. Hub sends HTTP POST requests to your endpoints, enabling real-time integrations and custom workflows.
 
 ## What You Can Build
 
@@ -21,7 +21,7 @@ Configure webhook URLs via the `SERVICE_WEBHOOK_URLS` environment variable:
 
 ```bash
 # Single webhook
-SERVICE_WEBHOOK_URLS=https://api.example.com/webhooks/store
+SERVICE_WEBHOOK_URLS=https://api.example.com/webhooks/hub
 
 # Multiple webhooks (comma-separated)
 SERVICE_WEBHOOK_URLS=https://api.example.com/webhooks,https://analytics.example.com/events
@@ -30,7 +30,7 @@ SERVICE_WEBHOOK_URLS=https://api.example.com/webhooks,https://analytics.example.
 Add to your `.env` file:
 
 ```bash
-SERVICE_WEBHOOK_URLS=https://your-domain.com/webhooks/store
+SERVICE_WEBHOOK_URLS=https://your-domain.com/webhooks/hub
 ```
 
 Then restart the service:
@@ -41,7 +41,7 @@ make dev
 
 ## Event Types
 
-Store sends webhooks for four types of events:
+Hub sends webhooks for four types of events:
 
 ### `experience.created`
 
@@ -120,13 +120,13 @@ All webhooks follow a consistent format:
 
 ### Request Format
 
-Store makes an HTTP POST request to each configured webhook URL:
+Hub makes an HTTP POST request to each configured webhook URL:
 
 ```http
 POST /your-endpoint HTTP/1.1
 Host: api.example.com
 Content-Type: application/json
-User-Agent: Formbricks-Store/1.0
+User-Agent: Formbricks-Hub/1.0
 
 {
   "event": "experience.created",
@@ -137,7 +137,7 @@ User-Agent: Formbricks-Store/1.0
 
 ### Retry Logic & Reliability
 
-Store uses a **worker pool architecture** to ensure reliable webhook delivery:
+Hub uses a **worker pool architecture** to ensure reliable webhook delivery:
 
 - **Worker pool**: 10 concurrent workers process webhooks in parallel
 - **Attempts**: Up to 3 retries per webhook
@@ -151,7 +151,7 @@ Webhook delivery is **fully asynchronous** and never blocks API responses. If yo
 :::
 
 :::tip Worker Pool Benefits
-The worker pool ensures Store can handle high-volume webhook traffic without memory leaks, even if your endpoints are slow or temporarily unavailable.
+The worker pool ensures Hub can handle high-volume webhook traffic without memory leaks, even if your endpoints are slow or temporarily unavailable.
 :::
 
 ### Expected Response

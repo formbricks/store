@@ -2,7 +2,7 @@
 
 ## Reporting a Vulnerability
 
-The Formbricks Store team takes security vulnerabilities seriously. We appreciate your efforts to responsibly disclose your findings.
+The Formbricks Hub team takes security vulnerabilities seriously. We appreciate your efforts to responsibly disclose your findings.
 
 ### How to Report
 
@@ -41,20 +41,20 @@ To help us better understand and resolve the issue, please include as much of th
 
 ## Supported Versions
 
-Formbricks Store is currently in **beta** (pre-1.0 release). We provide security updates for:
+Formbricks Hub is currently in **beta** (pre-1.0 release). We provide security updates for:
 
 | Version | Supported          |
 | ------- | ------------------ |
 | Latest  | :white_check_mark: |
 | < Latest| :x:                |
 
-We recommend always using the latest version of Formbricks Store.
+We recommend always using the latest version of Formbricks Hub.
 
 ## Security Best Practices
 
 ### For Users
 
-When deploying Formbricks Store, please follow these security best practices:
+When deploying Formbricks Hub, please follow these security best practices:
 
 #### API Keys
 
@@ -96,7 +96,7 @@ When deploying Formbricks Store, please follow these security best practices:
 
 ### For Contributors
 
-When contributing code to Formbricks Store:
+When contributing code to Formbricks Hub:
 
 - **No hardcoded secrets**: Never commit API keys, passwords, or sensitive data
 - **Validate inputs**: Always validate and sanitize user inputs
@@ -123,7 +123,7 @@ When contributing code to Formbricks Store:
 
 ### No PII Storage by Default
 
-Formbricks Store is designed to avoid storing Personally Identifiable Information (PII):
+Formbricks Hub is designed to avoid storing Personally Identifiable Information (PII):
 
 - Use hashed `user_identifier` instead of email addresses or names
 - Store only necessary feedback data
@@ -144,7 +144,7 @@ Subscribe to our GitHub repository to receive notifications about security updat
 
 This security policy applies to:
 
-- Formbricks Store API (`apps/store`)
+- Formbricks Hub API (`apps/hub`)
 - Data import scripts (`scripts/data-imports/*`)
 - Documentation site (`apps/docs`)
 - Docker configurations
@@ -168,5 +168,5 @@ For general questions, use GitHub Discussions or Issues.
 
 ---
 
-Thank you for helping keep Formbricks Store and our users safe!
+Thank you for helping keep Formbricks Hub and our users safe!
 

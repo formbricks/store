@@ -1,10 +1,10 @@
-# Contributing to Formbricks Store
+# Contributing to Formbricks Hub
 
-Thank you for your interest in contributing to Formbricks Store! We're excited to have you here. This document provides guidelines and instructions for contributing to the project.
+Thank you for your interest in contributing to Formbricks Hub! We're excited to have you here. This document provides guidelines and instructions for contributing to the project.
 
 ## 🌟 Ways to Contribute
 
-There are many ways to contribute to Formbricks Store:
+There are many ways to contribute to Formbricks Hub:
 
 - **Report bugs** - Help us identify and fix issues
 - **Suggest features** - Share ideas for new functionality
@@ -32,8 +32,8 @@ Before you begin, ensure you have the following installed:
 **1. Fork and clone the repository:**
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/store.git
-cd store
+git clone https://github.com/YOUR_USERNAME/hub.git
+cd hub
 ```
 
 **2. Start the infrastructure:**
@@ -43,10 +43,10 @@ cd store
 docker compose up -d
 ```
 
-**3. Run the Store API:**
+**3. Run the Hub API:**
 
 ```bash
-cd apps/store
+cd apps/hub
 cp env.example .env
 
 # Edit .env with your configuration:
@@ -76,7 +76,7 @@ The docs will be available at `http://localhost:3000`
 curl http://localhost:8888/health
 
 # Run Go tests
-cd apps/store
+cd apps/hub
 make test
 
 # Run linter
@@ -87,7 +87,7 @@ make lint
 
 We maintain high code quality standards to ensure the codebase remains maintainable and consistent.
 
-### Go Code (Store API)
+### Go Code (Hub API)
 
 - **Format**: Use `gofmt` (or `make fmt`)
 - **Linter**: Use `golangci-lint` (or `make lint`)
@@ -97,7 +97,7 @@ We maintain high code quality standards to ensure the codebase remains maintaina
 
 ```bash
 # Format code
-cd apps/store
+cd apps/hub
 make fmt
 
 # Run linter
@@ -180,7 +180,7 @@ Use descriptive branch names with prefixes:
 
 4. **Run tests and linters locally:**
    ```bash
-   cd apps/store
+   cd apps/hub
    make test
    make lint
    ```
@@ -242,7 +242,7 @@ func TestCreateExperience(t *testing.T) {
 
 Run tests:
 ```bash
-cd apps/store
+cd apps/hub
 make test
 ```
 
@@ -261,7 +261,7 @@ pnpm build
 
 When reporting a bug, please use the bug report template and include:
 
-- **Formbricks Store version**: e.g., v0.1.0
+- **Formbricks Hub version**: e.g., v0.1.0
 - **Deployment method**: Docker, Kubernetes, binary
 - **Operating system**: Linux, macOS, Windows
 - **Steps to reproduce**: Clear, numbered steps
@@ -292,8 +292,8 @@ Want to add support for a new data source? Here's how:
 
 2. **Add import script** (`import.py`) that:
    - Fetches data from the external API
-   - Maps data to Store's field types
-   - Calls Store's REST API
+   - Maps data to Hub's field types
+   - Calls Hub's REST API
 
 3. **Include documentation**:
    - `README.md` - Setup and usage instructions
@@ -337,7 +337,7 @@ Contributors don't need to worry about releases - just focus on great code!
 
 ## 🙏 Thank You!
 
-Thank you for contributing to Formbricks Store! Your efforts help make experience management accessible to everyone.
+Thank you for contributing to Formbricks Hub! Your efforts help make experience management accessible to everyone.
 
 Every contribution counts, and we appreciate your time and expertise. ❤️
 

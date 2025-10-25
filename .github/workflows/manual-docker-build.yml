@@ -33,9 +33,9 @@ jobs:
       attestations: write
       id-token: write
     with:
-      image-name: formbricks/store
-      context: ./apps/store
-      dockerfile: ./apps/store/Dockerfile
+      image-name: formbricks/hub
+      context: ./apps/hub
+      dockerfile: ./apps/hub/Dockerfile
       platforms: ${{ inputs.platforms }}
       push: ${{ inputs.push }}
       tags-input: type=raw,value=${{ inputs.tag }}

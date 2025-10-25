@@ -2,35 +2,35 @@ services:
   # PostgreSQL Database with pgvector
   postgres:
     image: pgvector/pgvector:pg18
-    container_name: formbricks_store_postgres
+    container_name: formbricks_hub_postgres
     restart: unless-stopped
     environment:
       POSTGRES_USER: formbricks
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-formbricks_secure_password}
-      POSTGRES_DB: store
+      POSTGRES_DB: hub
     ports:
       - '5432:5432'
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U formbricks -d store']
+      test: ['CMD-SHELL', 'pg_isready -U formbricks -d hub']
       interval: 10s
       timeout: 5s
       retries: 5
     networks:
-      - formbricks_store
+      - formbricks_hub
 
-  # Formbricks Store API
-  store:
-    image: ghcr.io/formbricks/store:latest
-    container_name: formbricks_store_api
+  # Formbricks Hub API
+  hub:
+    image: ghcr.io/formbricks/hub:latest
+    container_name: formbricks_hub_api
     restart: unless-stopped
     depends_on:
       postgres:
         condition: service_healthy
     environment:
       # Required: Database connection
-      SERVICE_DATABASE_URL: postgresql://formbricks:${POSTGRES_PASSWORD:-formbricks_secure_password}@postgres:5432/store?sslmode=disable
+      SERVICE_DATABASE_URL: postgresql://formbricks:${POSTGRES_PASSWORD:-formbricks_secure_password}@postgres:5432/hub?sslmode=disable
       
       # Required: API authentication key
       SERVICE_API_KEY: ${SERVICE_API_KEY}
@@ -64,13 +64,13 @@ services:
       retries: 3
       start_period: 10s
     networks:
-      - formbricks_store
+      - formbricks_hub
 
 volumes:
   postgres_data:
     driver: local
 
 networks:
-  formbricks_store:
+  formbricks_hub:
     driver: bridge
 

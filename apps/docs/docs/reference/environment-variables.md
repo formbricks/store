@@ -4,10 +4,10 @@ sidebar_position: 1
 
 # Environment Variables
 
-Complete reference for configuring Formbricks Store via environment variables.
+Complete reference for configuring Formbricks Hub via environment variables.
 
 :::tip Huma Convention
-Store uses the `SERVICE_` prefix for all environment variables, following [Huma v2](https://huma.rocks/) conventions.
+Hub uses the `SERVICE_` prefix for all environment variables, following [Huma v2](https://huma.rocks/) conventions.
 :::
 
 ## Required Variables
@@ -24,13 +24,13 @@ postgres://[user]:[password]@[host]:[port]/[database]?[params]
 **Examples:**
 ```bash
 # Local development
-SERVICE_DATABASE_URL=postgres://formbricks:formbricks_dev@localhost:5432/store_dev?sslmode=disable
+SERVICE_DATABASE_URL=postgres://formbricks:formbricks_dev@localhost:5432/hub_dev?sslmode=disable
 
 # Production with SSL
-SERVICE_DATABASE_URL=postgres://user:pass@db.example.com:5432/store_prod?sslmode=require
+SERVICE_DATABASE_URL=postgres://user:pass@db.example.com:5432/hub_prod?sslmode=require
 
 # With connection pooling
-SERVICE_DATABASE_URL=postgres://user:pass@pooler.example.com:5432/store_prod?pool_max_conns=20
+SERVICE_DATABASE_URL=postgres://user:pass@pooler.example.com:5432/hub_prod?pool_max_conns=20
 ```
 
 **Default:** None (required)
@@ -108,7 +108,7 @@ Comma-separated list of webhook URLs to receive experience data events.
 **Examples:**
 ```bash
 # Single webhook
-SERVICE_WEBHOOK_URLS=https://api.example.com/webhooks/store
+SERVICE_WEBHOOK_URLS=https://api.example.com/webhooks/hub
 
 # Multiple webhooks
 SERVICE_WEBHOOK_URLS=https://api.example.com/webhooks,https://analytics.example.com/events
@@ -297,10 +297,10 @@ SERVICE_ENVIRONMENT=production
 ## Complete Example: Development
 
 ```bash
-# apps/store/.env
+# apps/hub/.env
 
 # Database (required)
-SERVICE_DATABASE_URL=postgres://formbricks:formbricks_dev@localhost:5432/store_dev?sslmode=disable
+SERVICE_DATABASE_URL=postgres://formbricks:formbricks_dev@localhost:5432/hub_dev?sslmode=disable
 
 # Server
 SERVICE_PORT=8080
@@ -331,7 +331,7 @@ SERVICE_WEBHOOK_URLS=
 # Production environment variables
 
 # Database (required)
-SERVICE_DATABASE_URL=postgres://prod_user:secure_password@db.production.com:5432/store_prod?sslmode=require
+SERVICE_DATABASE_URL=postgres://prod_user:secure_password@db.production.com:5432/hub_prod?sslmode=require
 
 # Server
 SERVICE_PORT=8080
@@ -353,7 +353,7 @@ SERVICE_LOG_LEVEL=info
 SERVICE_ENVIRONMENT=production
 
 # Webhooks
-SERVICE_WEBHOOK_URLS=https://api.yourdomain.com/webhooks/store,https://analytics.yourdomain.com/events/store
+SERVICE_WEBHOOK_URLS=https://api.yourdomain.com/webhooks/hub,https://analytics.yourdomain.com/events/hub
 ```
 
 ## Command-Line Arguments
@@ -361,7 +361,7 @@ SERVICE_WEBHOOK_URLS=https://api.yourdomain.com/webhooks/store,https://analytics
 All environment variables can also be passed as command-line arguments:
 
 ```bash
-./store \
+./hub \
   --database-url "postgres://..." \
   --port 8080 \
   --api-key "your-key" \
@@ -393,15 +393,15 @@ make dev
 docker run -d \
   -e SERVICE_DATABASE_URL="postgres://..." \
   -e SERVICE_API_KEY="your-key" \
-  formbricks/store:latest
+  formbricks/hub:latest
 ```
 
 ### Using Docker Compose
 
 ```yaml
 services:
-  store:
-    image: formbricks/store:latest
+  hub:
+    image: formbricks/hub:latest
     environment:
       SERVICE_DATABASE_URL: ${SERVICE_DATABASE_URL}
       SERVICE_API_KEY: ${SERVICE_API_KEY}
@@ -418,7 +418,7 @@ services:
 
 **Solution:** Set the variable in your `.env` file:
 ```bash
-SERVICE_DATABASE_URL=postgres://formbricks:formbricks_dev@localhost:5432/store_dev?sslmode=disable
+SERVICE_DATABASE_URL=postgres://formbricks:formbricks_dev@localhost:5432/hub_dev?sslmode=disable
 ```
 
 ### "Cannot connect to database" Error
@@ -430,7 +430,7 @@ SERVICE_DATABASE_URL=postgres://formbricks:formbricks_dev@localhost:5432/store_d
 2. Verify connection string format
 3. Test connection manually:
    ```bash
-   psql "postgres://formbricks:formbricks_dev@localhost:5432/store_dev?sslmode=disable"
+   psql "postgres://formbricks:formbricks_dev@localhost:5432/hub_dev?sslmode=disable"
    ```
 
 ### API Key Not Working

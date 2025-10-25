@@ -6,7 +6,7 @@ import BrowserOnly from '@docusaurus/BrowserOnly';
 
 # API Reference
 
-Explore and test the Store API endpoints interactively.
+Explore and test the Hub API endpoints interactively.
 
 <BrowserOnly fallback={<div>Loading API documentation...</div>}>
   {() => {
@@ -15,7 +15,7 @@ Explore and test the Store API endpoints interactively.
     
     return (
       <div style={{ marginTop: '2rem' }}>
-        <SwaggerUI url="/openapi/store.json" />
+        <SwaggerUI url="/openapi/hub.json" />
         <style>{`
           [data-theme="dark"] .swagger-ui {
             filter: invert(88%) hue-rotate(180deg);

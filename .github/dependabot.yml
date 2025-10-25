@@ -2,7 +2,7 @@ version: 2
 updates:
   # Go modules (security updates always immediate, regular updates grouped weekly)
   - package-ecosystem: "gomod"
-    directory: "/apps/store"
+    directory: "/apps/hub"
     schedule:
       interval: "weekly"
       day: "monday"
@@ -97,7 +97,7 @@ updates:
 
   # Docker (security updates always immediate, regular updates monthly)
   - package-ecosystem: "docker"
-    directory: "/apps/store"
+    directory: "/apps/hub"
     schedule:
       interval: "monthly"
       day: "monday"

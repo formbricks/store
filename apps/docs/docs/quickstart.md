@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # Quick Start Guide
 
-Get the Formbricks Store running with Docker in under 5 minutes.
+Get the Formbricks Hub running with Docker in under 5 minutes.
 
 ## Prerequisites
 
@@ -15,15 +15,15 @@ Get the Formbricks Store running with Docker in under 5 minutes.
 
 ### Option 1: Docker Compose (Recommended)
 
-The easiest way to run Formbricks Store with all dependencies.
+The easiest way to run Formbricks Hub with all dependencies.
 
 #### 1. Download the Configuration
 
 Create a new directory and download the production Docker Compose file:
 
 ```bash
-mkdir formbricks-store && cd formbricks-store
-curl -o docker-compose.yml https://raw.githubusercontent.com/formbricks/store/main/docker-compose.prod.yml
+mkdir formbricks-hub && cd formbricks-hub
+curl -o docker-compose.yml https://raw.githubusercontent.com/formbricks/hub/main/docker-compose.prod.yml
 ```
 
 Or create it manually:
@@ -32,33 +32,33 @@ Or create it manually:
 services:
   postgres:
     image: postgres:18-alpine
-    container_name: formbricks_store_postgres
+    container_name: formbricks_hub_postgres
     restart: unless-stopped
     environment:
       POSTGRES_USER: formbricks
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-formbricks_secure_password}
-      POSTGRES_DB: store
+      POSTGRES_DB: hub
     ports:
       - '5432:5432'
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U formbricks -d store']
+      test: ['CMD-SHELL', 'pg_isready -U formbricks -d hub']
       interval: 10s
       timeout: 5s
       retries: 5
     networks:
-      - formbricks_store
+      - formbricks_hub
 
-  store:
-    image: ghcr.io/formbricks/store:latest
-    container_name: formbricks_store_api
+  hub:
+    image: ghcr.io/formbricks/hub:latest
+    container_name: formbricks_hub_api
     restart: unless-stopped
     depends_on:
       postgres:
         condition: service_healthy
     environment:
-      SERVICE_DATABASE_URL: postgresql://formbricks:${POSTGRES_PASSWORD:-formbricks_secure_password}@postgres:5432/store?sslmode=disable
+      SERVICE_DATABASE_URL: postgresql://formbricks:${POSTGRES_PASSWORD:-formbricks_secure_password}@postgres:5432/hub?sslmode=disable
       SERVICE_API_KEY: ${SERVICE_API_KEY}
       SERVICE_PORT: ${SERVICE_PORT:-8080}
       SERVICE_HOST: 0.0.0.0
@@ -77,14 +77,14 @@ services:
       retries: 3
       start_period: 10s
     networks:
-      - formbricks_store
+      - formbricks_hub
 
 volumes:
   postgres_data:
     driver: local
 
 networks:
-  formbricks_store:
+  formbricks_hub:
     driver: bridge
 ```
 
@@ -129,10 +129,10 @@ docker-compose up -d
 ```
 
 This will:
-- Pull the latest Formbricks Store image from GitHub Container Registry
+- Pull the latest Formbricks Hub image from GitHub Container Registry
 - Start PostgreSQL with persistent storage
 - Run database migrations automatically
-- Start the Store API on port 8080
+- Start the Hub API on port 8080
 
 #### 4. Verify Installation
 
@@ -145,8 +145,8 @@ docker-compose ps
 Expected output:
 ```
 NAME                        STATUS              PORTS
-formbricks_store_api        Up (healthy)        0.0.0.0:8080->8080/tcp
-formbricks_store_postgres   Up (healthy)        0.0.0.0:5432->5432/tcp
+formbricks_hub_api        Up (healthy)        0.0.0.0:8080->8080/tcp
+formbricks_hub_postgres   Up (healthy)        0.0.0.0:5432->5432/tcp
 ```
 
 Test the health endpoint:
@@ -162,17 +162,17 @@ Expected response:
 
 ### Option 2: Docker Run (Minimal)
 
-If you have an existing PostgreSQL instance, run just the Store API:
+If you have an existing PostgreSQL instance, run just the Hub API:
 
 ```bash
 docker run -d \
-  --name formbricks-store \
+  --name formbricks-hub \
   -p 8080:8080 \
-  -e SERVICE_DATABASE_URL="postgresql://user:password@host:5432/store?sslmode=disable" \
+  -e SERVICE_DATABASE_URL="postgresql://user:password@host:5432/hub?sslmode=disable" \
   -e SERVICE_API_KEY="your-secret-key" \
   -e SERVICE_OPENAI_API_KEY="sk-your-openai-key" \
   -e SERVICE_LOG_LEVEL="info" \
-  ghcr.io/formbricks/store:latest
+  ghcr.io/formbricks/hub:latest
 ```
 
 :::tip
@@ -241,7 +241,7 @@ curl -X POST http://localhost:8080/v1/experiences \
   }'
 ```
 
-Store will automatically:
+Hub will automatically:
 - Extract sentiment (e.g., "negative")
 - Detect emotion (e.g., "frustration")
 - Identify topics (e.g., ["checkout", "user experience"])
@@ -282,7 +282,7 @@ Response:
 | `SERVICE_WEBHOOK_URLS` | No | - | Comma-separated webhook URLs |
 
 :::info AI Features
-If `SERVICE_OPENAI_API_KEY` is not provided, Store will still work but text responses won't be enriched with sentiment/topic analysis or available for semantic search. [Learn more about AI enrichment →](./core-concepts/ai-enrichment)
+If `SERVICE_OPENAI_API_KEY` is not provided, Hub will still work but text responses won't be enriched with sentiment/topic analysis or available for semantic search. [Learn more about AI enrichment →](./core-concepts/ai-enrichment)
 :::
 
 [See full environment variable reference →](./reference/environment-variables)
@@ -295,12 +295,12 @@ postgresql://username:password@host:port/database?sslmode=disable
 
 For Docker Compose (services in same network):
 ```
-postgresql://formbricks:password@postgres:5432/store?sslmode=disable
+postgresql://formbricks:password@postgres:5432/hub?sslmode=disable
 ```
 
 For external PostgreSQL:
 ```
-postgresql://user:pass@db.example.com:5432/store?sslmode=require
+postgresql://user:pass@db.example.com:5432/hub?sslmode=require
 ```
 
 ## Managing the Service
@@ -311,8 +311,8 @@ postgresql://user:pass@db.example.com:5432/store?sslmode=require
 # All services
 docker-compose logs -f
 
-# Just the Store API
-docker-compose logs -f store
+# Just the Hub API
+docker-compose logs -f hub
 
 # Just PostgreSQL
 docker-compose logs -f postgres
@@ -403,7 +403,7 @@ ports:
 Check the logs for errors:
 
 ```bash
-docker-compose logs store
+docker-compose logs hub
 ```
 
 Common issues:
@@ -430,7 +430,7 @@ docker-compose logs postgres
 Check if the service is listening:
 
 ```bash
-docker exec formbricks_store_api wget -O- http://localhost:8080/health
+docker exec formbricks_hub_api wget -O- http://localhost:8080/health
 ```
 
 ### Cannot Pull Docker Image
@@ -438,7 +438,7 @@ docker exec formbricks_store_api wget -O- http://localhost:8080/health
 Ensure you have access to GitHub Container Registry:
 
 ```bash
-docker pull ghcr.io/formbricks/store:latest
+docker pull ghcr.io/formbricks/hub:latest
 ```
 
 If authentication is required:
@@ -452,11 +452,11 @@ Verify the volume is mounted:
 
 ```bash
 docker volume ls | grep postgres_data
-docker volume inspect formbricks-store_postgres_data
+docker volume inspect formbricks-hub_postgres_data
 ```
 
 ## Getting Help
 
-- **GitHub Discussions**: [Ask questions and share ideas](https://github.com/formbricks/store/discussions)
-- **GitHub Issues**: [Report bugs or request features](https://github.com/formbricks/store/issues)
+- **GitHub Discussions**: [Ask questions and share ideas](https://github.com/formbricks/hub/discussions)
+- **GitHub Issues**: [Report bugs or request features](https://github.com/formbricks/hub/issues)
 - **API Reference**: [Interactive documentation](./api-reference)

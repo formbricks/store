@@ -1,6 +1,6 @@
 # AI Enrichment
 
-Turn raw text feedback into actionable insights automatically. Store uses OpenAI to extract sentiment, emotion, and topics from every text response—no manual tagging required.
+Turn raw text feedback into actionable insights automatically. Hub uses OpenAI to extract sentiment, emotion, and topics from every text response—no manual tagging required.
 
 ## What You Can Do
 
@@ -13,9 +13,9 @@ With AI enrichment, you can:
 
 ## What Gets Enriched
 
-Store enriches **only text responses** (`field_type = 'text'`). Ratings, NPS scores, and other field types pass through unchanged.
+Hub enriches **only text responses** (`field_type = 'text'`). Ratings, NPS scores, and other field types pass through unchanged.
 
-For each text response, Store automatically extracts:
+For each text response, Hub automatically extracts:
 
 | Field | Type | Description | Example Values |
 |-------|------|-------------|----------------|
@@ -32,7 +32,7 @@ Sign up at [platform.openai.com](https://platform.openai.com) and generate an AP
 
 **Cost:** ~$0.015 per 1,000 text responses (very affordable at scale)
 
-### 2. Configure Store
+### 2. Configure Hub
 
 Add your OpenAI API key to your environment:
 
@@ -108,7 +108,7 @@ Enrichment happens **asynchronously in the background**, so your API stays fast:
 
 ### Worker Pool Architecture
 
-Store uses a **pool of concurrent workers** to process enrichment jobs efficiently:
+Hub uses a **pool of concurrent workers** to process enrichment jobs efficiently:
 
 - **3 workers by default** - Process multiple jobs in parallel
 - **PostgreSQL-backed queue** - Reliable job storage with retries
@@ -117,7 +117,7 @@ Store uses a **pool of concurrent workers** to process enrichment jobs efficient
 
 ### What Gets Sent to OpenAI
 
-Store sends the text response with question context (if available) for better topic extraction:
+Hub sends the text response with question context (if available) for better topic extraction:
 
 **With question context:**
 ```
@@ -134,7 +134,7 @@ Including the question helps the AI extract more accurate topics. For example, "
 
 ### Reliability & Error Handling
 
-Store is designed to **never fail** because of AI enrichment:
+Hub is designed to **never fail** because of AI enrichment:
 
 - ❌ **OpenAI timeout?** → Experience saved, enrichment skipped
 - ❌ **API rate limit?** → Job retried later  
@@ -146,7 +146,7 @@ Your data is **always saved**, regardless of enrichment status.
 
 ## Webhooks
 
-When enrichment completes, Store automatically sends an `experience.enriched` webhook to all configured endpoints.
+When enrichment completes, Hub automatically sends an `experience.enriched` webhook to all configured endpoints.
 
 ### Event Flow
 
