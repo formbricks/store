@@ -25,8 +25,8 @@ func GenerateOpenAPISpec(cfg *config.Config, client *ent.Client, dispatcher *web
 	humaConfig := huma.DefaultConfig("Formbricks Hub API", "1.0.0")
 	humaConfig.Info.Description = `Experience data storage service for the Formbricks ecosystem.
 
-📚 Full Documentation: https://formbricks.com/docs/hub
-🚀 Quick Start: https://formbricks.com/docs/hub/quickstart
+📚 Full Documentation: https://hub.formbricks.com
+🚀 Quick Start: https://hub.formbricks.com/quickstart
 🔌 Connector Ecosystem: Coming soon`
 	humaConfig.Info.Contact = &huma.Contact{
 		Name:  "Formbricks Team",
