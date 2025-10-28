@@ -1,0 +1,7 @@
+# Redirect rules for Docusaurus with /hub/ baseUrl
+# Redirect all /hub/* requests to their corresponding root files
+/hub/assets/*  /assets/*  200
+/hub/img/*     /img/*     200
+/hub/openapi/* /openapi/* 200
+/hub/*         /index.html 200
+
