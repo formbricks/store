@@ -28,7 +28,9 @@ setup: ## First-time setup: create .env, install deps, start DB
 	@go install entgo.io/ent/cmd/ent@latest
 	@echo "🐘 Starting PostgreSQL..."
 	@cd ../.. && docker-compose up -d postgres
-	@sleep 2
+	@sleep 5
+	@echo "🔧 Enabling pgvector extension..."
+	@docker exec formbricks_postgres psql -U formbricks -d hub_dev -c "CREATE EXTENSION IF NOT EXISTS vector;" || echo "⚠️  Warning: Could not create extension. Database may already exist."
 	@echo ""
 	@echo "✅ Setup complete!"
 	@echo ""
@@ -79,6 +81,10 @@ docker-up: ## Start PostgreSQL with Docker Compose
 
 docker-down: ## Stop Docker Compose services (PostgreSQL only)
 	cd ../.. && docker-compose down postgres
+
+enable-pgvector: ## Enable pgvector extension in database (run after docker-up)
+	@echo "🔧 Enabling pgvector extension..."
+	@docker exec formbricks_postgres psql -U formbricks -d hub_dev -c "CREATE EXTENSION IF NOT EXISTS vector;" || echo "❌ Error: Could not create extension"
 
 install-deps: ## Install Go dependencies and dev tools
 	go mod download
