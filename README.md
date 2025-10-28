@@ -10,7 +10,7 @@ Aggregate, enrich, and analyze customer feedback from surveys, reviews, and supp
 [![CI](https://github.com/formbricks/hub/workflows/CI/badge.svg)](https://github.com/formbricks/hub/actions)
 [![GitHub stars](https://img.shields.io/github/stars/formbricks/hub?style=social)](https://github.com/formbricks/hub/stargazers)
 
-[Documentation](https://formbricks.com/hub/) · [Quick Start](#-quick-start) · [Community](#-community)
+[Documentation](https://hub.formbricks.com/) · [Quick Start](#-quick-start) · [Community](#-community)
 
 </div>
 

@@ -610,7 +610,7 @@
       "name": "Formbricks Team",
       "url": "https://formbricks.com"
     },
-    "description": "Experience data storage service for the Formbricks ecosystem.\n\n📚 Full Documentation: https://formbricks.com/docs/hub\n🚀 Quick Start: https://formbricks.com/docs/hub/quickstart\n🔌 Connector Ecosystem: Coming soon",
+    "description": "Experience data storage service for the Formbricks ecosystem.\n\n📚 Full Documentation: https://hub.formbricks.com\n🚀 Quick Start: https://hub.formbricks.com/quickstart\n🔌 Connector Ecosystem: Coming soon",
     "license": {
       "name": "Apache-2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0"
