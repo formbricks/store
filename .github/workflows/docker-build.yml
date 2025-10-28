@@ -85,7 +85,7 @@ jobs:
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
             type=raw,value=latest,enable=${{ github.event_name == 'release' && github.event.release.prerelease == false }}
-            type=sha,prefix={{branch}}-
+            type=sha,prefix=sha-
             ${{ inputs.tags-input }}
           labels: |
             org.opencontainers.image.title=Formbricks Hub
