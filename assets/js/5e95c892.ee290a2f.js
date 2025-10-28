@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunk_formbricks_docs=globalThis.webpackChunk_formbricks_docs||[]).push([[647],{77720:(s,r,e)=>{e.r(r),e.d(r,{default:()=>d});e(39430);var c=e(70851),a=e(54477),o=e(94162),u=e(10362),i=e(65854),l=e(25270);function d(s){return(0,l.jsx)(o.e3,{className:(0,c.A)(a.G.wrapper.docsPages),children:(0,l.jsx)(i.A,{children:(0,u.v)(s.route.routes)})})}}}]);
