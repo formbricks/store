@@ -6,7 +6,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/ent"
+	"github.com/formbricks/hub/apps/hub/internal/ent"
 )
 
 // The EnrichmentJobFunc type is an adapter to allow the use of ordinary

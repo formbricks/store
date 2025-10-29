@@ -8,10 +8,10 @@ import (
 
 	_ "github.com/lib/pq"
 
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/api"
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/config"
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/ent"
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/webhook"
+	"github.com/formbricks/hub/apps/hub/internal/api"
+	"github.com/formbricks/hub/apps/hub/internal/config"
+	"github.com/formbricks/hub/apps/hub/internal/ent"
+	"github.com/formbricks/hub/apps/hub/internal/webhook"
 )
 
 func main() {

@@ -5,12 +5,12 @@ package enttest
 import (
 	"context"
 
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/ent"
+	"github.com/formbricks/hub/apps/hub/internal/ent"
 	// required by schema hooks.
-	_ "github.com/formbricks/formbricks-rewrite/apps/hub/internal/ent/runtime"
+	_ "github.com/formbricks/hub/apps/hub/internal/ent/runtime"
 
 	"entgo.io/ent/dialect/sql/schema"
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/ent/migrate"
+	"github.com/formbricks/hub/apps/hub/internal/ent/migrate"
 )
 
 type (

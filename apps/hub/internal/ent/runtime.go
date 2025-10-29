@@ -5,9 +5,9 @@ package ent
 import (
 	"time"
 
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/ent/enrichmentjob"
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/ent/experiencedata"
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/ent/schema"
+	"github.com/formbricks/hub/apps/hub/internal/ent/enrichmentjob"
+	"github.com/formbricks/hub/apps/hub/internal/ent/experiencedata"
+	"github.com/formbricks/hub/apps/hub/internal/ent/schema"
 	"github.com/google/uuid"
 )
 

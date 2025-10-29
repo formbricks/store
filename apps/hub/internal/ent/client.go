@@ -9,15 +9,15 @@ import (
 	"log"
 	"reflect"
 
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/ent/migrate"
+	"github.com/formbricks/hub/apps/hub/internal/ent/migrate"
 	"github.com/google/uuid"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/ent/enrichmentjob"
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/ent/experiencedata"
+	"github.com/formbricks/hub/apps/hub/internal/ent/enrichmentjob"
+	"github.com/formbricks/hub/apps/hub/internal/ent/experiencedata"
 )
 
 // Client is the client that holds all ent builders.

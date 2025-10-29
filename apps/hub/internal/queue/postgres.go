@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/ent"
+	"github.com/formbricks/hub/apps/hub/internal/ent"
 	"github.com/google/uuid"
 )
 

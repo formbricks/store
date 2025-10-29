@@ -8,8 +8,8 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/ent/enrichmentjob"
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/ent/predicate"
+	"github.com/formbricks/hub/apps/hub/internal/ent/enrichmentjob"
+	"github.com/formbricks/hub/apps/hub/internal/ent/predicate"
 )
 
 // EnrichmentJobDelete is the builder for deleting a EnrichmentJob entity.

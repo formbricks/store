@@ -8,11 +8,11 @@ import (
 
 	"github.com/danielgtaylor/huma/v2"
 
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/ent"
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/ent/experiencedata"
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/models"
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/queue"
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/webhook"
+	"github.com/formbricks/hub/apps/hub/internal/ent"
+	"github.com/formbricks/hub/apps/hub/internal/ent/experiencedata"
+	"github.com/formbricks/hub/apps/hub/internal/models"
+	"github.com/formbricks/hub/apps/hub/internal/queue"
+	"github.com/formbricks/hub/apps/hub/internal/webhook"
 )
 
 // enqueueAIJobs enqueues enrichment and embedding jobs for text responses.

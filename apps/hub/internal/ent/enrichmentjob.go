@@ -9,8 +9,8 @@ import (
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/ent/enrichmentjob"
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/ent/experiencedata"
+	"github.com/formbricks/hub/apps/hub/internal/ent/enrichmentjob"
+	"github.com/formbricks/hub/apps/hub/internal/ent/experiencedata"
 	"github.com/google/uuid"
 )
 

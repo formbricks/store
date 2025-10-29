@@ -11,11 +11,11 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/config"
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/ent"
-	custommiddleware "github.com/formbricks/formbricks-rewrite/apps/hub/internal/middleware"
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/queue"
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/webhook"
+	"github.com/formbricks/hub/apps/hub/internal/config"
+	"github.com/formbricks/hub/apps/hub/internal/ent"
+	custommiddleware "github.com/formbricks/hub/apps/hub/internal/middleware"
+	"github.com/formbricks/hub/apps/hub/internal/queue"
+	"github.com/formbricks/hub/apps/hub/internal/webhook"
 )
 
 // Server holds the HTTP server and dependencies
