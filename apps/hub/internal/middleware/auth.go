@@ -38,15 +38,30 @@ func APIKeyAuth(api huma.API, apiKey string) func(ctx huma.Context, next func(hu
 
 // secureCompare performs a constant-time comparison of two strings to prevent timing attacks.
 // Returns true if the strings are equal, false otherwise.
+// Pads inputs to equal length to avoid leaking information about the expected key length.
 func secureCompare(a, b string) bool {
-	// If lengths don't match, still compare to prevent timing leaks
 	aBytes := []byte(a)
 	bBytes := []byte(b)
 
-	// subtle.ConstantTimeCompare requires equal length, so we need to handle length mismatch
-	if len(aBytes) != len(bBytes) {
-		return false
+	// Pad to equal length to avoid leaking key length via timing
+	maxLen := len(aBytes)
+	if len(bBytes) > maxLen {
+		maxLen = len(bBytes)
 	}
 
-	return subtle.ConstantTimeCompare(aBytes, bBytes) == 1
+	// Pad both to maxLen
+	aPadded := make([]byte, maxLen)
+	bPadded := make([]byte, maxLen)
+	copy(aPadded, aBytes)
+	copy(bPadded, bBytes)
+
+	// Now perform constant-time comparison on equal-length slices
+	// This always takes the same time regardless of whether lengths matched
+	match := subtle.ConstantTimeCompare(aPadded, bPadded)
+	
+	// Also check lengths matched in constant time
+	lengthMatch := subtle.ConstantTimeEq(int32(len(aBytes)), int32(len(bBytes)))
+	
+	// Both must be true: lengths match AND bytes match
+	return match == 1 && lengthMatch == 1
 }

@@ -5,14 +5,21 @@ import (
 	"net"
 	"net/http"
 	"sync"
+	"time"
 
 	"golang.org/x/time/rate"
 )
 
+// ipLimiterEntry holds a rate limiter and its last access time for eviction
+type ipLimiterEntry struct {
+	limiter    *rate.Limiter
+	lastAccess time.Time
+}
+
 // RateLimiter implements per-IP and global rate limiting using token bucket algorithm
 type RateLimiter struct {
-	// Per-IP limiters
-	ipLimiters map[string]*rate.Limiter
+	// Per-IP limiters with TTL tracking
+	ipLimiters map[string]*ipLimiterEntry
 	mu         sync.RWMutex
 	perIPRate  rate.Limit
 	perIPBurst int
@@ -25,23 +32,34 @@ type RateLimiter struct {
 
 // NewRateLimiter creates a new rate limiter with per-IP and global limits
 func NewRateLimiter(perIPRate, perIPBurst, globalRate, globalBurst int, logger *slog.Logger) *RateLimiter {
-	return &RateLimiter{
-		ipLimiters:    make(map[string]*rate.Limiter),
+	rl := &RateLimiter{
+		ipLimiters:    make(map[string]*ipLimiterEntry),
 		perIPRate:     rate.Limit(perIPRate),
 		perIPBurst:    perIPBurst,
 		globalLimiter: rate.NewLimiter(rate.Limit(globalRate), globalBurst),
 		logger:        logger,
 	}
+
+	// Start background cleanup goroutine to evict stale IP limiters
+	go rl.cleanupStaleIPs()
+
+	return rl
 }
 
 // getLimiter returns the rate limiter for a specific IP, creating one if it doesn't exist
 func (rl *RateLimiter) getLimiter(ip string) *rate.Limiter {
+	now := time.Now()
+
 	rl.mu.RLock()
-	limiter, exists := rl.ipLimiters[ip]
+	entry, exists := rl.ipLimiters[ip]
 	rl.mu.RUnlock()
 
 	if exists {
-		return limiter
+		// Update last access time
+		rl.mu.Lock()
+		entry.lastAccess = now
+		rl.mu.Unlock()
+		return entry.limiter
 	}
 
 	// Create new limiter for this IP
@@ -49,14 +67,37 @@ func (rl *RateLimiter) getLimiter(ip string) *rate.Limiter {
 	defer rl.mu.Unlock()
 
 	// Double-check after acquiring write lock
-	if limiter, exists := rl.ipLimiters[ip]; exists {
-		return limiter
+	if entry, exists := rl.ipLimiters[ip]; exists {
+		entry.lastAccess = now
+		return entry.limiter
 	}
 
-	limiter = rate.NewLimiter(rl.perIPRate, rl.perIPBurst)
-	rl.ipLimiters[ip] = limiter
+	limiter := rate.NewLimiter(rl.perIPRate, rl.perIPBurst)
+	rl.ipLimiters[ip] = &ipLimiterEntry{
+		limiter:    limiter,
+		lastAccess: now,
+	}
 
 	return limiter
+}
+
+// cleanupStaleIPs periodically removes IP limiters that haven't been accessed recently
+func (rl *RateLimiter) cleanupStaleIPs() {
+	ticker := time.NewTicker(5 * time.Minute)
+	defer ticker.Stop()
+
+	for range ticker.C {
+		rl.mu.Lock()
+		now := time.Now()
+		staleThreshold := 10 * time.Minute
+
+		for ip, entry := range rl.ipLimiters {
+			if now.Sub(entry.lastAccess) > staleThreshold {
+				delete(rl.ipLimiters, ip)
+			}
+		}
+		rl.mu.Unlock()
+	}
 }
 
 // Middleware returns an http.Handler middleware that enforces rate limits
@@ -73,6 +114,7 @@ func (rl *RateLimiter) Middleware() func(http.Handler) http.Handler {
 					"path", r.URL.Path,
 					"method", r.Method)
 
+				w.Header().Set("Content-Type", "application/json")
 				http.Error(w, `{"error":"Rate limit exceeded. Too many requests globally. Please try again later."}`, http.StatusTooManyRequests)
 				return
 			}
@@ -85,6 +127,7 @@ func (rl *RateLimiter) Middleware() func(http.Handler) http.Handler {
 					"path", r.URL.Path,
 					"method", r.Method)
 
+				w.Header().Set("Content-Type", "application/json")
 				http.Error(w, `{"error":"Rate limit exceeded. Too many requests from your IP. Please try again later."}`, http.StatusTooManyRequests)
 				return
 			}

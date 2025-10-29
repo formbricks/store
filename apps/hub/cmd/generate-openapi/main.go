@@ -11,6 +11,7 @@ import (
 	"github.com/formbricks/hub/apps/hub/internal/api"
 	"github.com/formbricks/hub/apps/hub/internal/config"
 	"github.com/formbricks/hub/apps/hub/internal/ent"
+	"github.com/formbricks/hub/apps/hub/internal/queue"
 	"github.com/formbricks/hub/apps/hub/internal/webhook"
 )
 
@@ -81,8 +82,8 @@ func main() {
 	webhookURLs := cfg.GetWebhookURLs()
 	dispatcher := webhook.NewDispatcher(webhookURLs, logger)
 
-	// Create nil queue for generate-openapi (queue not needed for spec generation)
-	var enrichmentQueue interface{} = nil
+	// Create a queue instance for spec generation (routes need it even though spec generation doesn't use it)
+	enrichmentQueue := queue.NewPostgresQueue(client)
 
 	// Generate and export the OpenAPI spec
 	logger.Info("generating OpenAPI specification...")

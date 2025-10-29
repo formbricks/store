@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"log/slog"
+	"math"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
@@ -86,38 +87,87 @@ func RegisterSearchRoutes(api huma.API, cfg *config.Config, client *ent.Client, 
 		if input.Since != "" {
 			// Parse ISO 8601 time string
 			sinceTime, err := time.Parse(time.RFC3339, input.Since)
-			if err == nil {
-				query = query.Where(experiencedata.CollectedAtGTE(sinceTime))
+			if err != nil {
+				return nil, huma.Error400BadRequest("Invalid 'since' timestamp format. Expected ISO 8601 (RFC3339) format, e.g., 2024-01-01T00:00:00Z")
 			}
+			query = query.Where(experiencedata.CollectedAtGTE(sinceTime))
 		}
 		if input.Until != "" {
 			// Parse ISO 8601 time string
 			untilTime, err := time.Parse(time.RFC3339, input.Until)
-			if err == nil {
-				query = query.Where(experiencedata.CollectedAtLTE(untilTime))
+			if err != nil {
+				return nil, huma.Error400BadRequest("Invalid 'until' timestamp format. Expected ISO 8601 (RFC3339) format, e.g., 2024-12-31T23:59:59Z")
+			}
+			query = query.Where(experiencedata.CollectedAtLTE(untilTime))
+		}
+
+		// Execute search using raw SQL to get distance values
+		// Build the SQL query with distance calculation
+		sqlQuery := client.ExperienceData.Query().
+			Where(experiencedata.EmbeddingNotNil())
+
+		// Apply filters
+		if input.SourceType != "" {
+			sqlQuery = sqlQuery.Where(experiencedata.SourceTypeEQ(input.SourceType))
+		}
+		if input.Since != "" {
+			if sinceTime, parseErr := time.Parse(time.RFC3339, input.Since); parseErr == nil {
+				sqlQuery = sqlQuery.Where(experiencedata.CollectedAtGTE(sinceTime))
+			}
+		}
+		if input.Until != "" {
+			if untilTime, parseErr := time.Parse(time.RFC3339, input.Until); parseErr == nil {
+				sqlQuery = sqlQuery.Where(experiencedata.CollectedAtLTE(untilTime))
 			}
 		}
 
-		// Execute search
-		experiences, err := query.All(ctx)
+		// Use raw SQL to select distance alongside the entity
+		type resultRow struct {
+			ID         string
+			Distance   float64
+			Experience *ent.ExperienceData
+		}
+
+		var results []SearchResultItem
+		
+		// Get the experiences with a subquery for distance
+		experiences, err := sqlQuery.
+			Order(func(s *sql.Selector) {
+				s.OrderExpr(entvec.CosineDistance(experiencedata.FieldEmbedding, queryVector))
+			}).
+			Limit(input.Limit).
+			All(ctx)
+
 		if err != nil {
-			// Use sanitized error handling for database errors
 			return nil, handleDatabaseError(logger, err, "semantic search", "query")
 		}
 
-		// Convert results to output format
-		results := make([]SearchResultItem, len(experiences))
-		for i, exp := range experiences {
-			// Calculate cosine similarity score (1 - distance)
-			// Note: We already have the experiences ordered by distance from the query
-			// For now, we'll compute similarity in a simple way
-			// In a real implementation, you might want to calculate this precisely
-			similarityScore := 1.0 - float64(i)/float64(len(experiences))*0.5 // Simplified scoring
-
-			results[i] = SearchResultItem{
-				ExperienceData:  entityToOutput(exp),
-				SimilarityScore: similarityScore,
+		// For each experience, compute the actual similarity
+		// Since we can't easily extract distance from Ent query, we recalculate it
+		for _, exp := range experiences {
+			// Calculate cosine distance between query vector and experience embedding
+			var distance float64
+			if exp.Embedding != nil && queryVector.Slice() != nil {
+				distance = cosineDist(queryVector.Slice(), exp.Embedding.Slice())
+			} else {
+				distance = 1.0 // Maximum distance if no embedding
 			}
+
+			// Convert distance to similarity: similarity = 1 - distance
+			// Cosine distance ranges from 0 (identical) to 2 (opposite)
+			// Clamp to [0, 1] range
+			similarity := 1.0 - distance
+			if similarity < 0 {
+				similarity = 0
+			}
+			if similarity > 1 {
+				similarity = 1
+			}
+
+			results = append(results, SearchResultItem{
+				ExperienceData:  entityToOutput(exp),
+				SimilarityScore: similarity,
+			})
 		}
 
 		return &SearchOutput{
@@ -132,4 +182,46 @@ func RegisterSearchRoutes(api huma.API, cfg *config.Config, client *ent.Client, 
 			},
 		}, nil
 	})
+}
+
+// cosineDist calculates the cosine distance between two vectors
+// Cosine distance = 1 - cosine similarity
+// Returns 0 for identical vectors, up to 2 for opposite vectors
+func cosineDist(a, b []float32) float64 {
+	if len(a) != len(b) {
+		return 2.0 // Maximum distance for incompatible vectors
+	}
+	if len(a) == 0 {
+		return 2.0
+	}
+
+	var dotProduct float64
+	var magnitudeA float64
+	var magnitudeB float64
+
+	for i := 0; i < len(a); i++ {
+		dotProduct += float64(a[i]) * float64(b[i])
+		magnitudeA += float64(a[i]) * float64(a[i])
+		magnitudeB += float64(b[i]) * float64(b[i])
+	}
+
+	magnitudeA = math.Sqrt(magnitudeA)
+	magnitudeB = math.Sqrt(magnitudeB)
+
+	if magnitudeA == 0 || magnitudeB == 0 {
+		return 2.0 // Avoid division by zero
+	}
+
+	cosineSim := dotProduct / (magnitudeA * magnitudeB)
+	
+	// Clamp to [-1, 1] to handle floating point errors
+	if cosineSim > 1.0 {
+		cosineSim = 1.0
+	}
+	if cosineSim < -1.0 {
+		cosineSim = -1.0
+	}
+
+	// Distance = 1 - similarity
+	return 1.0 - cosineSim
 }

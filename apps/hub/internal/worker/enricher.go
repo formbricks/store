@@ -5,6 +5,7 @@ package worker
 
 import (
 	"context"
+	"fmt"
 	"log/slog"
 	"time"
 
@@ -132,7 +133,7 @@ func (e *Enricher) processJob(ctx context.Context, workerID int, job *queue.Enri
 			"worker_id", workerID,
 			"job_id", job.ID,
 			"job_type", job.JobType)
-		_ = e.queue.MarkFailed(ctx, job.ID, nil)
+		_ = e.queue.MarkFailed(ctx, job.ID, fmt.Errorf("unknown job type: %s", job.JobType))
 	}
 }
 
@@ -142,6 +143,16 @@ func (e *Enricher) processEnrichmentJob(ctx context.Context, workerID int, job *
 		"worker_id", workerID,
 		"job_id", job.ID,
 		"experience_id", job.ExperienceID)
+
+	// Skip if enrichment service is not available
+	if e.enrichmentSvc == nil {
+		e.logger.Warn("enrichment service not configured, skipping job",
+			"worker_id", workerID,
+			"job_id", job.ID)
+		// Mark as complete since there's no work to do
+		_ = e.queue.MarkComplete(ctx, job.ID)
+		return
+	}
 
 	// Enrich the text
 	result, err := e.enrichmentSvc.EnrichText(ctx, job.Text)
@@ -237,7 +248,8 @@ func (e *Enricher) processEmbeddingJob(ctx context.Context, workerID int, job *q
 		e.logger.Warn("embedding service not configured, skipping job",
 			"worker_id", workerID,
 			"job_id", job.ID)
-		_ = e.queue.MarkFailed(ctx, job.ID, nil)
+		// Mark as complete since there's no work to do
+		_ = e.queue.MarkComplete(ctx, job.ID)
 		return
 	}
 
