@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/ent/predicate"
+	"github.com/formbricks/hub/apps/hub/internal/ent/predicate"
 	"github.com/google/uuid"
 	pgvector "github.com/pgvector/pgvector-go"
 )

@@ -5,7 +5,7 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/models"
+	"github.com/formbricks/hub/apps/hub/internal/models"
 )
 
 // CreateExperienceInput represents the input for creating an experience

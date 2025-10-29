@@ -28,9 +28,9 @@ import (
 	"github.com/testcontainers/testcontainers-go/modules/postgres"
 	"github.com/testcontainers/testcontainers-go/wait"
 
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/config"
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/ent"
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/webhook"
+	"github.com/formbricks/hub/apps/hub/internal/config"
+	"github.com/formbricks/hub/apps/hub/internal/ent"
+	"github.com/formbricks/hub/apps/hub/internal/webhook"
 )
 
 // setupTestAPI creates a test API with a real Postgres container

@@ -8,12 +8,12 @@ import (
 	"log/slog"
 	"time"
 
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/embedding"
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/enrichment"
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/ent"
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/models"
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/queue"
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/webhook"
+	"github.com/formbricks/hub/apps/hub/internal/embedding"
+	"github.com/formbricks/hub/apps/hub/internal/enrichment"
+	"github.com/formbricks/hub/apps/hub/internal/ent"
+	"github.com/formbricks/hub/apps/hub/internal/models"
+	"github.com/formbricks/hub/apps/hub/internal/queue"
+	"github.com/formbricks/hub/apps/hub/internal/webhook"
 	"github.com/google/uuid"
 )
 

@@ -6,7 +6,7 @@ import (
 	"log/slog"
 
 	"github.com/danielgtaylor/huma/v2"
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/ent"
+	"github.com/formbricks/hub/apps/hub/internal/ent"
 	"github.com/google/uuid"
 )
 

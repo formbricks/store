@@ -12,8 +12,8 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/ent/enrichmentjob"
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/ent/experiencedata"
+	"github.com/formbricks/hub/apps/hub/internal/ent/enrichmentjob"
+	"github.com/formbricks/hub/apps/hub/internal/ent/experiencedata"
 )
 
 // ent aliases to avoid import conflicts in user's code.

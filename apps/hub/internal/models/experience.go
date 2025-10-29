@@ -8,7 +8,7 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/ent"
+	"github.com/formbricks/hub/apps/hub/internal/ent"
 )
 
 // Experience represents an experience data record in the domain.

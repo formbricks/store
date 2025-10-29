@@ -7,7 +7,7 @@ import (
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/ent/predicate"
+	"github.com/formbricks/hub/apps/hub/internal/ent/predicate"
 	"github.com/google/uuid"
 )
 
