@@ -71,21 +71,15 @@ func RegisterSearchRoutes(api huma.API, cfg *config.Config, client *ent.Client, 
 			return nil, handleServiceError(logger, err, "embedding", "generate query embedding")
 		}
 
-		// Build query with filters
+		// Build query with filters and ordering by cosine distance
 		query := client.ExperienceData.Query().
-			Where(experiencedata.EmbeddingNotNil()). // Only return experiences with embeddings
-			Order(func(s *sql.Selector) {
-				// Order by cosine distance (ascending = most similar first)
-				s.OrderExpr(entvec.CosineDistance("embedding", queryVector))
-			}).
-			Limit(input.Limit)
+			Where(experiencedata.EmbeddingNotNil()) // Only return experiences with embeddings
 
 		// Apply optional filters
 		if input.SourceType != "" {
 			query = query.Where(experiencedata.SourceTypeEQ(input.SourceType))
 		}
 		if input.Since != "" {
-			// Parse ISO 8601 time string
 			sinceTime, err := time.Parse(time.RFC3339, input.Since)
 			if err != nil {
 				return nil, huma.Error400BadRequest("Invalid 'since' timestamp format. Expected ISO 8601 (RFC3339) format, e.g., 2024-01-01T00:00:00Z")
@@ -93,7 +87,6 @@ func RegisterSearchRoutes(api huma.API, cfg *config.Config, client *ent.Client, 
 			query = query.Where(experiencedata.CollectedAtGTE(sinceTime))
 		}
 		if input.Until != "" {
-			// Parse ISO 8601 time string
 			untilTime, err := time.Parse(time.RFC3339, input.Until)
 			if err != nil {
 				return nil, huma.Error400BadRequest("Invalid 'until' timestamp format. Expected ISO 8601 (RFC3339) format, e.g., 2024-12-31T23:59:59Z")
@@ -101,37 +94,8 @@ func RegisterSearchRoutes(api huma.API, cfg *config.Config, client *ent.Client, 
 			query = query.Where(experiencedata.CollectedAtLTE(untilTime))
 		}
 
-		// Execute search using raw SQL to get distance values
-		// Build the SQL query with distance calculation
-		sqlQuery := client.ExperienceData.Query().
-			Where(experiencedata.EmbeddingNotNil())
-
-		// Apply filters
-		if input.SourceType != "" {
-			sqlQuery = sqlQuery.Where(experiencedata.SourceTypeEQ(input.SourceType))
-		}
-		if input.Since != "" {
-			if sinceTime, parseErr := time.Parse(time.RFC3339, input.Since); parseErr == nil {
-				sqlQuery = sqlQuery.Where(experiencedata.CollectedAtGTE(sinceTime))
-			}
-		}
-		if input.Until != "" {
-			if untilTime, parseErr := time.Parse(time.RFC3339, input.Until); parseErr == nil {
-				sqlQuery = sqlQuery.Where(experiencedata.CollectedAtLTE(untilTime))
-			}
-		}
-
-		// Use raw SQL to select distance alongside the entity
-		type resultRow struct {
-			ID         string
-			Distance   float64
-			Experience *ent.ExperienceData
-		}
-
-		var results []SearchResultItem
-		
-		// Get the experiences with a subquery for distance
-		experiences, err := sqlQuery.
+		// Execute the query
+		experiences, err := query.
 			Order(func(s *sql.Selector) {
 				s.OrderExpr(entvec.CosineDistance(experiencedata.FieldEmbedding, queryVector))
 			}).
@@ -144,6 +108,7 @@ func RegisterSearchRoutes(api huma.API, cfg *config.Config, client *ent.Client, 
 
 		// For each experience, compute the actual similarity
 		// Since we can't easily extract distance from Ent query, we recalculate it
+		var results []SearchResultItem
 		for _, exp := range experiences {
 			// Calculate cosine distance between query vector and experience embedding
 			var distance float64
