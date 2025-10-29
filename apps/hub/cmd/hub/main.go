@@ -11,14 +11,14 @@ import (
 
 	"entgo.io/ent/dialect/sql"
 	"github.com/danielgtaylor/huma/v2/humacli"
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/api"
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/config"
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/embedding"
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/enrichment"
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/ent"
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/queue"
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/webhook"
-	"github.com/formbricks/formbricks-rewrite/apps/hub/internal/worker"
+	"github.com/formbricks/hub/internal/api"
+	"github.com/formbricks/hub/internal/config"
+	"github.com/formbricks/hub/internal/embedding"
+	"github.com/formbricks/hub/internal/enrichment"
+	"github.com/formbricks/hub/internal/ent"
+	"github.com/formbricks/hub/internal/queue"
+	"github.com/formbricks/hub/internal/webhook"
+	"github.com/formbricks/hub/internal/worker"
 )
 
 func main() {
@@ -53,12 +53,7 @@ func main() {
 		db.SetConnMaxLifetime(time.Duration(cfg.DBConnMaxLifetime) * time.Minute)
 		db.SetConnMaxIdleTime(time.Duration(cfg.DBConnMaxIdleTime) * time.Minute)
 
-		logger.Info("database connected",
-			"url", cfg.DatabaseURL,
-			"max_open_conns", cfg.DBMaxOpenConns,
-			"max_idle_conns", cfg.DBMaxIdleConns,
-			"conn_max_lifetime_min", cfg.DBConnMaxLifetime,
-			"conn_max_idle_time_min", cfg.DBConnMaxIdleTime)
+		logger.Info("database connected")
 
 		// Create Ent client with the configured driver
 		client := ent.NewClient(ent.Driver(drv))
