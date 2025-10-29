@@ -21,8 +21,6 @@ const (
 	defaultQueueSize = 100
 	// defaultHTTPTimeout is the default timeout for HTTP requests
 	defaultHTTPTimeout = 5 * time.Second
-	// defaultAsyncTimeout is the default timeout for async operations
-	defaultAsyncTimeout = 30 * time.Second
 	// maxRetries is the maximum number of retry attempts for webhook delivery
 	maxRetries = 3
 	// retryBaseDelay is the base delay for exponential backoff
@@ -261,11 +259,13 @@ func (d *Dispatcher) sendWithRetry(ctx context.Context, url string, payload []by
 // DispatchAsync is a convenience method that dispatches webhooks asynchronously
 // Uses the worker pool internally, so no goroutine leak
 func (d *Dispatcher) DispatchAsync(eventType EventType, data interface{}) {
-	// Create a context with timeout for async operations
-	ctx, cancel := context.WithTimeout(context.Background(), defaultAsyncTimeout)
-	defer cancel()
-
-	d.Dispatch(ctx, eventType, data)
+	// Use background context for async operations since:
+	// 1. HTTP client has its own timeout (defaultHTTPTimeout = 5s)
+	// 2. Workers have retry logic with exponential backoff
+	// 3. No need for request-scoped tracing in async webhooks
+	// This avoids leaving timeout timers active and is simpler than managing
+	// context lifecycle across async boundaries
+	d.Dispatch(context.Background(), eventType, data)
 }
 
 // String returns a string representation of the event type

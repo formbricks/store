@@ -55,13 +55,13 @@ func (q *PostgresQueue) enqueueJob(ctx context.Context, experienceID, text strin
 }
 
 // Dequeue retrieves and locks the next pending job for processing.
-// Uses FOR UPDATE SKIP LOCKED to prevent race conditions between workers.
+// Uses a query+update loop to prevent race conditions between workers.
 // Returns nil if no jobs are available.
 func (q *PostgresQueue) Dequeue(ctx context.Context) (*EnrichmentJob, error) {
-	// Try to find and claim a pending job using a simple approach:
+	// Try to find and claim a pending job using a query+update approach:
 	// 1. Query for pending jobs
 	// 2. Try to update the first one
-	// 3. If successful, return it; if it fails (race condition), try again
+	// 3. If successful, return it; if it fails (race condition), return nil
 
 	jobs, err := q.client.EnrichmentJob.
 		Query().
@@ -136,7 +136,12 @@ func (q *PostgresQueue) MarkFailed(ctx context.Context, jobID string, jobErr err
 		return fmt.Errorf("invalid job ID: %w", err)
 	}
 
-	errorMsg := jobErr.Error()
+	// Guard against nil errors
+	errorMsg := "unknown error"
+	if jobErr != nil {
+		errorMsg = jobErr.Error()
+	}
+
 	err = q.client.EnrichmentJob.
 		UpdateOneID(id).
 		SetStatus("failed").

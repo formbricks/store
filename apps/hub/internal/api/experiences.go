@@ -179,16 +179,18 @@ func RegisterExperienceRoutes(api huma.API, client *ent.Client, dispatcher *webh
 		if input.Since != "" {
 			// Parse ISO 8601 time string
 			sinceTime, err := time.Parse(time.RFC3339, input.Since)
-			if err == nil {
-				query = query.Where(experiencedata.CollectedAtGTE(sinceTime))
+			if err != nil {
+				return nil, huma.Error400BadRequest("Invalid 'since' timestamp format. Expected ISO 8601 (RFC3339) format, e.g., 2024-01-01T00:00:00Z")
 			}
+			query = query.Where(experiencedata.CollectedAtGTE(sinceTime))
 		}
 		if input.Until != "" {
 			// Parse ISO 8601 time string
 			untilTime, err := time.Parse(time.RFC3339, input.Until)
-			if err == nil {
-				query = query.Where(experiencedata.CollectedAtLTE(untilTime))
+			if err != nil {
+				return nil, huma.Error400BadRequest("Invalid 'until' timestamp format. Expected ISO 8601 (RFC3339) format, e.g., 2024-12-31T23:59:59Z")
 			}
+			query = query.Where(experiencedata.CollectedAtLTE(untilTime))
 		}
 
 		// Get total count
@@ -244,6 +246,9 @@ func RegisterExperienceRoutes(api huma.API, client *ent.Client, dispatcher *webh
 			return nil, err
 		}
 
+		// Track if value_text is being updated for reprocessing
+		valueTextChanged := input.Body.ValueText != nil
+
 		// Build update query
 		update := client.ExperienceData.UpdateOneID(id)
 
@@ -279,7 +284,17 @@ func RegisterExperienceRoutes(api huma.API, client *ent.Client, dispatcher *webh
 			return nil, handleDatabaseError(logger, err, "update", id.String())
 		}
 
-		logger.Info("experience updated", "id", exp.ID)
+		// If value_text changed, re-enqueue AI processing jobs to update enrichment/embeddings
+		if valueTextChanged && enrichmentQueue != nil && *input.Body.ValueText != "" {
+			fieldType := models.FieldType(exp.FieldType)
+			if fieldType.ShouldEnrich() {
+				fieldLabel := exp.FieldLabel
+				enqueueAIJobs(ctx, logger, enrichmentQueue, exp, fieldLabel, *input.Body.ValueText)
+				logger.Info("experience updated with AI reprocessing", "id", exp.ID)
+			}
+		} else {
+			logger.Info("experience updated", "id", exp.ID)
+		}
 
 		// Dispatch webhook asynchronously
 		dispatcher.DispatchAsync(webhook.EventExperienceUpdated, entityToOutput(exp))

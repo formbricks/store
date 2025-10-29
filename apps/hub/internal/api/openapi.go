@@ -39,8 +39,8 @@ func GenerateOpenAPISpec(cfg *config.Config, client *ent.Client, dispatcher *web
 	}
 	humaConfig.Servers = []*huma.Server{
 		{
-			URL:         fmt.Sprintf("http://localhost:%d", cfg.Port),
-			Description: "Development server",
+			URL:         fmt.Sprintf("http://%s:%d", cfg.Host, cfg.Port),
+			Description: "API server",
 		},
 	}
 	// Disable default docs
@@ -70,8 +70,8 @@ func GenerateOpenAPISpec(cfg *config.Config, client *ent.Client, dispatcher *web
 }
 
 // ExportOpenAPISpec exports the OpenAPI spec to a writer in JSON format
-func ExportOpenAPISpec(cfg *config.Config, client *ent.Client, dispatcher *webhook.Dispatcher, enrichmentQueue interface{}, logger *slog.Logger, w io.Writer) error {
-	spec, err := GenerateOpenAPISpec(cfg, client, dispatcher, nil, logger)
+func ExportOpenAPISpec(cfg *config.Config, client *ent.Client, dispatcher *webhook.Dispatcher, enrichmentQueue queue.Queue, logger *slog.Logger, w io.Writer) error {
+	spec, err := GenerateOpenAPISpec(cfg, client, dispatcher, enrichmentQueue, logger)
 	if err != nil {
 		return fmt.Errorf("failed to generate OpenAPI spec: %w", err)
 	}
@@ -85,10 +85,10 @@ func ExportOpenAPISpec(cfg *config.Config, client *ent.Client, dispatcher *webho
 }
 
 // ServeOpenAPISpec is a handler that serves the OpenAPI spec
-func ServeOpenAPISpec(cfg *config.Config, client *ent.Client, dispatcher *webhook.Dispatcher, logger *slog.Logger) http.HandlerFunc {
+func ServeOpenAPISpec(cfg *config.Config, client *ent.Client, dispatcher *webhook.Dispatcher, enrichmentQueue queue.Queue, logger *slog.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
-		if err := ExportOpenAPISpec(cfg, client, dispatcher, nil, logger, w); err != nil {
+		if err := ExportOpenAPISpec(cfg, client, dispatcher, enrichmentQueue, logger, w); err != nil {
 			logger.Error("failed to serve OpenAPI spec", "error", err)
 			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		}
