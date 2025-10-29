@@ -53,12 +53,7 @@ func main() {
 		db.SetConnMaxLifetime(time.Duration(cfg.DBConnMaxLifetime) * time.Minute)
 		db.SetConnMaxIdleTime(time.Duration(cfg.DBConnMaxIdleTime) * time.Minute)
 
-		logger.Info("database connected",
-			"url", cfg.DatabaseURL,
-			"max_open_conns", cfg.DBMaxOpenConns,
-			"max_idle_conns", cfg.DBMaxIdleConns,
-			"conn_max_lifetime_min", cfg.DBConnMaxLifetime,
-			"conn_max_idle_time_min", cfg.DBConnMaxIdleTime)
+		logger.Info("database connected")
 
 		// Create Ent client with the configured driver
 		client := ent.NewClient(ent.Driver(drv))
