@@ -58,10 +58,10 @@ func secureCompare(a, b string) bool {
 	// Now perform constant-time comparison on equal-length slices
 	// This always takes the same time regardless of whether lengths matched
 	match := subtle.ConstantTimeCompare(aPadded, bPadded)
-	
+
 	// Also check lengths matched in constant time
 	lengthMatch := subtle.ConstantTimeEq(int32(len(aBytes)), int32(len(bBytes)))
-	
+
 	// Both must be true: lengths match AND bytes match
 	return match == 1 && lengthMatch == 1
 }

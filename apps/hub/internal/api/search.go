@@ -178,7 +178,7 @@ func cosineDist(a, b []float32) float64 {
 	}
 
 	cosineSim := dotProduct / (magnitudeA * magnitudeB)
-	
+
 	// Clamp to [-1, 1] to handle floating point errors
 	if cosineSim > 1.0 {
 		cosineSim = 1.0
