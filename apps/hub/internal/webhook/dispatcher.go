@@ -21,8 +21,6 @@ const (
 	defaultQueueSize = 100
 	// defaultHTTPTimeout is the default timeout for HTTP requests
 	defaultHTTPTimeout = 5 * time.Second
-	// defaultAsyncTimeout is the default timeout for async operations
-	defaultAsyncTimeout = 30 * time.Second
 	// maxRetries is the maximum number of retry attempts for webhook delivery
 	maxRetries = 3
 	// retryBaseDelay is the base delay for exponential backoff
